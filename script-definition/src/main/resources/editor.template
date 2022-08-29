@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model ref="r:3a062227-c624-4edc-93a5-eb4f8fe0b0f3(Calculator.editor)" content="root">
+    <persistence version="9" />
+    <imports>
+        <import index="dvvt" ref="r:9b48b4ed-0c56-47dd-9287-6ea93d2a4530(Calculator.structure)" implicit="true" />
+    </imports>
+    <registry>
+        <language id="18bc6592-03a6-4e29-a83a-7ff23bde13ba" name="jetbrains.mps.lang.editor">
+            <concept id="1071666914219" name="jetbrains.mps.lang.editor.structure.ConceptEditorDeclaration" flags="ig" index="24kQdi" />
+            <concept id="1080736578640" name="jetbrains.mps.lang.editor.structure.BaseEditorComponent" flags="ig" index="2wURMF">
+                <child id="1080736633877" name="cellModel" index="2wV5jI" />
+            </concept>
+            <concept id="1139848536355" name="jetbrains.mps.lang.editor.structure.CellModel_WithRole" flags="ng" index="1$h60E">
+                <reference id="1140103550593" name="relationDeclaration" index="1NtTu8" />
+            </concept>
+            <concept id="1073389658414" name="jetbrains.mps.lang.editor.structure.CellModel_Property" flags="sg" stub="730538219796134133" index="3F0A7n" />
+            <concept id="1166049232041" name="jetbrains.mps.lang.editor.structure.AbstractComponent" flags="ng" index="1XWOmA">
+                <reference id="1166049300910" name="conceptDeclaration" index="1XX52x" />
+            </concept>
+        </language>
+    </registry>
+</model>
