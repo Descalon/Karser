@@ -2,6 +2,7 @@ package writers
 
 import models.Aspect
 import models.Editor
+import models.Structure
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import kotlin.math.abs
@@ -58,6 +59,7 @@ fun ref (doc: Document, init: RefBuilder.() -> Unit): Element {
 fun String.toMPSIDNumber() = "${abs(this.hashCode())}"
 
 fun resolver(aspect: Aspect) = when(aspect){
+    is Structure -> StructureWriter(aspect)
     is Editor -> EditorWriter(aspect)
     else -> throw IllegalArgumentException("things!")
 }

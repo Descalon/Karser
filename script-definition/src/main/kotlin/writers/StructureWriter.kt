@@ -1,16 +1,16 @@
 package writers
 
-import models.Concept
 import models.ConceptProperty
+import models.Structure
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import javax.xml.parsers.DocumentBuilderFactory
 
-class StructureWriter(private val principle: Concept):IWriter {
+class StructureWriter(private val principle: Structure):IWriter {
     private val document: Document
     private val model: Element
     override val documentName: String
-        get() = "${principle.name}.mpsr"
+        get() = "${principle.parent.name}.mpsr"
 
     init {
         val template = this::class.java.classLoader.getResource("structure.template")?.file
@@ -26,27 +26,27 @@ class StructureWriter(private val principle: Concept):IWriter {
     private fun generateNode(): Element {
         val node = document.createElement("node")
         node.setAttribute("concept", ConceptDeclarationIndex)
-        node.setAttribute("id", "c${principle.id}")
+        node.setAttribute("id", "c${principle.parent.id}")
 
         node.appendChild(property(document) {
             role(ConceptIdIndex)
-            value(principle.name.toMPSIDNumber())
+            value(principle.parent.name.toMPSIDNumber())
         })
         node.appendChild(property(document) {
             role(INamedConceptNameIndex)
-            value(principle.name)
+            value(principle.parent.name)
         })
         node.appendChild(ref(document) {
             role(ConceptDeclarationExtendsIndex)
             to("$CoreImportIndex:${DataTypeMap["BaseConcept"]}")
         })
-        if(principle.structure.isRoot) {
+        if(principle.isRoot) {
             node.appendChild(property(document) {
                 role(IsRootableIndex)
                 value("true")
             })
         }
-        principle.structure.properties.forEach { node.appendChild(generatePropertyNode(it)) }
+        principle.properties.forEach { node.appendChild(generatePropertyNode(it)) }
         return node
     }
     private fun generatePropertyNode(property: ConceptProperty): Element {

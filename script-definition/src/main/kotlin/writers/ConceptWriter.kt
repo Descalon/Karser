@@ -9,8 +9,7 @@ import javax.xml.transform.stream.StreamResult
 
 class ConceptWriter(private val principle: Concept) {
     fun write(){
-        val documents = mutableListOf(StructureWriter(principle).write())
-        documents.addAll(principle.aspects.map { resolver(it).write() })
+        val documents = principle.aspects.map { resolver(it).write() }
 
         val transformer: Transformer = TransformerFactory.newInstance().newTransformer()
 
