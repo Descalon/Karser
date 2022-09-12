@@ -10,7 +10,8 @@ fun conceptBuilder(name: String, conceptId: Int, vararg implements: String, lamb
 fun editorBuilder(parent: Concept, init: EditorModelBuilder.() -> Unit) =
     EditorModelBuilder(parent).build(init)
 
-fun languageBuilder(name: String, init: LanguageModelBuilder.() -> Unit): Language =
+// Naming this function language, not languageBuilder, as this is the entrypoint for the DSL
+fun language(name: String, init: LanguageModelBuilder.() -> Unit): Language =
     LanguageModelBuilder(name).build(init)
 
 fun <T : IModelBuilder<Y>, Y : IModel> T.build(block: T.() -> Unit): Y =

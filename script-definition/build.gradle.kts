@@ -2,11 +2,11 @@ plugins {
     kotlin("jvm")
 }
 
-
-
 repositories {
     mavenCentral()
 }
+
+val kotestVersion = "5.4.2"
 
 dependencies {
     implementation(kotlin("stdlib"))
@@ -17,8 +17,8 @@ dependencies {
     // coroutines dependency is required for this particular definition
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 }
 
 tasks.getByName<Test>("test") {
