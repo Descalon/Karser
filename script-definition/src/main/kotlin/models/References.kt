@@ -17,5 +17,8 @@ open class Reference(var name: String, var type: String, val parent: Structure):
         get() = Indices.Structure.LinkDeclaration.ConceptIndex
     override val role: String
         get() = Indices.Structure.AbstractConceptDeclaration.LinkDeclaration
+
+    operator fun component1() = name
+    operator fun component2() = type
 }
 class ChildReference(name: String, type: String, parent: Structure) : Reference(name, type, parent)

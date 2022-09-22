@@ -8,7 +8,6 @@ import org.w3c.dom.Document
 import org.w3c.dom.Element
 import writers.EditorWriter
 import writers.StructureWriter
-import writers.appendChildren
 import kotlin.math.abs
 
 val DataTypeMap = mapOf(

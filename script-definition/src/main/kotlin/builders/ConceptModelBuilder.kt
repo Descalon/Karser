@@ -28,9 +28,6 @@ class ConceptModelBuilder(conceptName: String, conceptId: Int, implementations: 
     fun add(name: String, type: String, init: ChildReference.() -> Unit) =
         apply { structureAspect.children.add(ChildReference(name, type, structureAspect).apply(init)) }
 
-    fun addChild(name: String, type: String, init: Reference.() -> Unit) =
-        add(name, type, init)
-
     fun reference(name: String, type: String, init: Reference.() -> Unit) =
         apply { structureAspect.references.add(Reference(name, type, structureAspect).apply(init)) }
 
