@@ -4,11 +4,9 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import models.ChildReference
 import models.Concept
-import models.ConceptProperty
 
-object Counter {
+private object Counter {
     private var value = 0;
     val count
         get() = value++
@@ -20,17 +18,13 @@ class ConceptModelBuilderTests : FunSpec({
         else -> ConceptModelBuilder("TestConcept$id", id, arrayOf()).build(lambda)
     }
     test("An 'empty' concept still has a Structure aspect"){
-        val sut = sutBuilder {  }
+        val sut = ConceptModelBuilder("TestConcept", 0, arrayOf()).build {  }
         sut.aspects.shouldHaveSize(1)
         sut.structure.shouldNotBeNull()
     }
     test("Extends function adds parental concept to structure") {
         val sut = sutBuilder { extends("foobar") }
         sut.structure.extendsConcept shouldBe "foobar"
-    }
-    test("Root function adds root status to structure") {
-        val sut = sutBuilder { root() }
-        sut.structure.isRoot shouldBe true
     }
     test("Editor command adds an aspect"){
         val sut = sutBuilder { editor {} }
