@@ -16,23 +16,23 @@ class ConceptModelBuilder(conceptName: String, conceptId: Int, implementations: 
             where T : IModelBuilder<Y>, Y : IModel, Y : Aspect = builder.build(init).also { subject.aspects.add(it) }
 
     fun editor(init: EditorModelBuilder.() -> Unit): Editor = addAspect(EditorModelBuilder(subject), init)
-    fun set(key: String, value: String) = apply { structureAspect.properties.add(ConceptProperty(key,value,structureAspect.properties.size))}
+    fun set(key: String, value: String) = apply { structureAspect.properties.add(ConceptProperty(key,value,structureAspect))}
     fun setProperty(key: String, value: String) = set(key, value)
 
     fun add(name: String, type: String) =
-        apply { structureAspect.children.add(ChildReference(name, type)) }
+        apply { structureAspect.children.add(ChildReference(name, type, structureAspect)) }
 
     fun addChild(name: String, type: String) =
         add(name, type)
 
     fun add(name: String, type: String, init: ChildReference.() -> Unit) =
-        apply { structureAspect.children.add(ChildReference(name, type).apply(init)) }
+        apply { structureAspect.children.add(ChildReference(name, type, structureAspect).apply(init)) }
 
     fun addChild(name: String, type: String, init: Reference.() -> Unit) =
         add(name, type, init)
 
     fun reference(name: String, type: String, init: Reference.() -> Unit) =
-        apply { structureAspect.references.add(Reference(name, type).apply(init)) }
+        apply { structureAspect.references.add(Reference(name, type, structureAspect).apply(init)) }
 
     fun root() = apply { structureAspect.isRoot = true }
     fun extends(parent: String) = apply { structureAspect.extendsConcept = parent }

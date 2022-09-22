@@ -1,0 +1,18 @@
+package models
+
+interface IDProvider<T: IModel> {
+    fun getIdForModel(model: T): Int
+}
+data class Ref(val role: String, val to: String, val resolve: String)
+
+interface INode {
+    val id: Int
+    val conceptInstance: String
+    val role: String
+    val defaultProperties
+        get() = mapOf<String,String>()
+    val defaultReferences
+        get() = listOf<Ref>()
+    val childNodes
+        get() = listOf<INode>()
+}
