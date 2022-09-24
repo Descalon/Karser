@@ -9,5 +9,5 @@ class LanguageModelBuilder(languageName: String): IModelBuilder<Language>{
         concept.apply { parent = subject; subject.concepts.add(this) }
 
     fun concept(name: String, vararg implements: String, lambda: ConceptModelBuilder.() -> Unit): Concept =
-        ConceptModelBuilder(name, subject.concepts.size, implements, subject).build(lambda).also{subject.concepts.add(it)}
+        ConceptModelBuilder(name, implements, subject).build(lambda).also{subject.concepts.add(it)}
 }

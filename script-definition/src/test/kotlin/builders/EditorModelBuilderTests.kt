@@ -5,19 +5,18 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import models.*
-import java.lang.IllegalArgumentException
 
 private val Concept.editor
     get() = this.aspects.first { it is Editor } as Editor
 
 class EditorModelBuilderTests : FunSpec({
     fun editorOnly(init: EditorModelBuilder.() -> Unit): Editor {
-        val c = ConceptModelBuilder("TestConcept", 0, arrayOf()).build({})
+        val c = ConceptModelBuilder("TestConcept", arrayOf()).build {}
         return EditorModelBuilder(c).build(init)
     }
 
     fun concept(lambda: ConceptModelBuilder.() -> Unit) =
-        ConceptModelBuilder("TestConcept", 0, arrayOf()).build(lambda)
+        ConceptModelBuilder("TestConcept", arrayOf()).build(lambda)
 
     test("Invoking constant should add component of type EditorConstant to list") {
         val value = "value"

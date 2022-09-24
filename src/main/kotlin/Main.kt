@@ -3,7 +3,7 @@ import writers.ConceptWriter
 
 fun main(args: Array<String>) {
     val input = "language(\"Hello\"){}"
-    val c = conceptBuilder("OtherThings", 0){
+    val c = conceptBuilder("OtherThings"){
         set("aName", "string")
         set("aNumber", "integer")
         editor {

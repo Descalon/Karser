@@ -1,14 +1,17 @@
 package models
 
-import utils.*
+import utils.DataTypeMap
+import utils.Indices
+import utils.toMPSIDNumber
 
 data class ConceptProperty(val key: String, val value: String, val parent: Structure): IModel, INode{
     override val id: Int
         get() = parent.getIdForModel(this)
-    override val conceptInstance: String
-        get() = Indices.Structure.PropertyDeclaration.ConceptIndex
-    override val role: String
-        get() = Indices.Structure.AbstractConceptDeclaration.PropertyDeclaration
+
+    override val conceptInstance: String =
+        Indices.Structure.PropertyDeclaration.ConceptIndex
+    override val role: String =
+        Indices.Structure.AbstractConceptDeclaration.PropertyDeclaration
 
     override val defaultProperties: Map<String, String>
         get() = mapOf(
@@ -34,7 +37,7 @@ interface IEditorComponent : IModel, INode {
         get() = ""
 }
 data class EditorConstant(val value: String, override val parent: Editor) : IEditorComponent
-data class PropertyReferenceEditor(val reference: ConceptProperty, override val parent: Editor) : IEditorComponent{}
+data class PropertyReferenceEditor(val reference: ConceptProperty, override val parent: Editor) : IEditorComponent
 data class ListDeclarationEditor(val reference: String, override val parent: Editor) : IEditorComponent
 data class ChildPropertyReferenceEditor(val reference: String, val childProperty: String, override val parent: Editor) : IEditorComponent
 data class ChildIncludeEditor(val reference: String, override val parent: Editor): IEditorComponent

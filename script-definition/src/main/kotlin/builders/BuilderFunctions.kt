@@ -4,8 +4,8 @@ import models.Concept
 import models.IModel
 import models.Language
 
-fun conceptBuilder(name: String, conceptId: Int, vararg implements: String, lambda: ConceptModelBuilder.() -> Unit) =
-    ConceptModelBuilder(name, conceptId, implements).build(lambda)
+fun conceptBuilder(name: String, vararg implements: String, lambda: ConceptModelBuilder.() -> Unit) =
+    ConceptModelBuilder(name, implements).build(lambda)
 
 fun editorBuilder(parent: Concept, init: EditorModelBuilder.() -> Unit) =
     EditorModelBuilder(parent).build(init)

@@ -7,7 +7,7 @@ import io.kotest.matchers.shouldBe
 import models.Concept
 
 private object Counter {
-    private var value = 0;
+    private var value = 0
     val count
         get() = value++
 }
@@ -15,16 +15,20 @@ class ConceptModelBuilderTests : FunSpec({
     fun conceptBuilderAdd(builder:ConceptModelBuilder, name:String, type:String) = builder.add(name,type)
 
     fun sutBuilder(lambda: ConceptModelBuilder.() -> Unit) = when(val id = Counter.count) {
-        else -> ConceptModelBuilder("TestConcept$id", id, arrayOf()).build(lambda)
+        else -> ConceptModelBuilder("TestConcept$id", arrayOf()).build(lambda)
     }
     test("An 'empty' concept still has a Structure aspect"){
-        val sut = ConceptModelBuilder("TestConcept", 0, arrayOf()).build {  }
+        val sut = ConceptModelBuilder("TestConcept", arrayOf()).build {  }
         sut.aspects.shouldHaveSize(1)
         sut.structure.shouldNotBeNull()
     }
     test("Extends function adds parental concept to structure") {
         val sut = sutBuilder { extends("foobar") }
         sut.structure.extendsConcept shouldBe "foobar"
+    }
+    test("Root function sets root to true in structure") {
+        val sut = sutBuilder { root() }
+        sut.structure.isRoot shouldBe true
     }
     test("Editor command adds an aspect"){
         val sut = sutBuilder { editor {} }

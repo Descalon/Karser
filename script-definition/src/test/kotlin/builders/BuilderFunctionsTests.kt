@@ -13,13 +13,13 @@ class BuilderFunctionsTests: FunSpec ({
     }
 
     test("ConceptModelBuilder function should return Concept with name and id"){
-        val sut = conceptBuilder("TestConcept", 0){}
+        val sut = conceptBuilder("TestConcept"){}
         sut.name shouldBe "TestConcept"
-        sut.id shouldBe 0
+        sut.structure.id shouldBe 0
     }
 
     test("EditorModelBuilder function should return Editor "){
-        editorBuilder(conceptBuilder("TestConcept", 0){}){}.shouldBeTypeOf<Editor>()
+        editorBuilder(conceptBuilder("TestConcept"){}){}.shouldBeTypeOf<Editor>()
     }
 
     test("Happy flow builders") {

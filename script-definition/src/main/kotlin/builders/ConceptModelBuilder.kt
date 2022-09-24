@@ -2,12 +2,12 @@ package builders
 
 import models.*
 
-class ConceptModelBuilder(conceptName: String, conceptId: Int, implementations: Array<out String>, parentLanguage: Language? = null) : IModelBuilder<Concept>{
+class ConceptModelBuilder(conceptName: String, implementations: Array<out String>, parentLanguage: Language? = null) : IModelBuilder<Concept>{
     override val subject: Concept
     private val structureAspect: Structure
 
     init {
-        subject = Concept(conceptName,conceptId, implementations, parentLanguage)
+        subject = Concept(conceptName, parentLanguage)
         structureAspect = Structure(subject)
         subject.aspects.add(structureAspect)
     }

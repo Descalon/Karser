@@ -2,10 +2,10 @@ package models
 
 import utils.Indices
 
-open class Reference(var name: String, var type: String, val parent: Structure): IModel, INode{
-    var isOptional = false
+open class Reference(var name: String, private var type: String, val parent: Structure): IModel, INode{
+    private var isOptional = false
         private set
-    var isSingleton = false
+    private var isSingleton = false
         private set
 
     fun optional() = apply {isOptional = true}

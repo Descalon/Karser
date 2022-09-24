@@ -1,4 +1,3 @@
 package models
 
-interface IModel {
-}
+interface IModel

@@ -2,7 +2,6 @@ package builders
 
 import models.*
 
-private typealias ComponentHandler<T> = (T, Editor) -> IEditorComponent
 class EditorModelBuilder(parentConcept: Concept) : IModelBuilder<Editor> {
     override val subject: Editor = Editor(parentConcept)
 

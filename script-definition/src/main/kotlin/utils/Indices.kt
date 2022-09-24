@@ -1,10 +1,6 @@
 package utils
 
 class Indices {
-    interface IIndex {
-        val index: String
-    }
-
     class Imports {
         companion object Values {
             const val JetbrainsStructure = "tpck"

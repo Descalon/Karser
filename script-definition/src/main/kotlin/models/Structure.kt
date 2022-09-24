@@ -1,21 +1,19 @@
 package models
 
-import utils.*
+import utils.DataTypeMap
+import utils.Indices
+import utils.toMPSIDNumber
 
-class Structure(parent: Concept) : Aspect(parent), IModel, INode, IDProvider<IModel> {
+class Structure(parent: Concept) : Aspect(parent), IModel, IDProvider<IModel> {
     internal val properties: ConceptProperties = mutableListOf()
     internal val children: MutableList<ChildReference> = mutableListOf()
     internal val references: MutableList<Reference> = mutableListOf()
 
-    internal val propertyMap
-        get() = properties.associateBy ({it.key},{it.value})
     var isRoot = false
         internal set
     var extendsConcept = "BaseConcept"
         internal set
 
-    override val id: Int
-        get() = parent.getIdForModel(this)
     override val conceptInstance: String = Indices.Structure.ConceptDeclaration.ConceptIndex
     override val role: String = ""
 
@@ -23,7 +21,7 @@ class Structure(parent: Concept) : Aspect(parent), IModel, INode, IDProvider<IMo
         is ChildReference -> children.indexOf(model)
         is Reference -> references.indexOf(model)
         is ConceptProperty -> properties.indexOf(model)
-        else -> references.indexOf(model)
+        else -> throw IllegalArgumentException("Illegal type ${model::class}. Structure only supports ids for ChildReference, Reference, and ConceptProperty")
     }
 
     override val defaultProperties = mapOf(
