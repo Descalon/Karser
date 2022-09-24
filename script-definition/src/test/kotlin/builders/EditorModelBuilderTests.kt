@@ -80,7 +80,6 @@ class EditorModelBuilderTests : FunSpec({
         actual.childProperty shouldBe property
     }
     test("Invoking newline should add component of type NewLine to list") {
-        val value = "value"
         val sut = editorOnly {
             newLine()
         }

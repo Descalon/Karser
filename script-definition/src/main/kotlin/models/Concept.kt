@@ -1,7 +1,7 @@
 package models
 
 
-class Concept(
+class Concept internal constructor(
     val name: String,
     internal var parent: Language? = null,
 ) : IModel, IDProvider<Aspect>{

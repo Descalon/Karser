@@ -15,14 +15,14 @@ class StructureTests : FunSpec ({
         }
         test("ChildReference") {
             val sut = Structure(Concept("testConcept"))
-            sut.children.add(ChildReference("key1", "value", sut))
-            val child = ChildReference("key", "value", sut).also { sut.children.add((it)) }
+            sut.children.add(ChildReference(sut, "key1", "value"))
+            val child = ChildReference(sut, "key", "value").also { sut.children.add((it)) }
             sut.getIdForModel(child) shouldBe 1
         }
         test("Reference") {
             val sut = Structure(Concept("testConcept"))
-            sut.references.add(Reference("key1", "value", sut))
-            val child = Reference("key", "value", sut).also { sut.references.add((it)) }
+            sut.references.add(Reference(sut,"key1", "value"))
+            val child = Reference(sut, "key", "value").also { sut.references.add((it)) }
             sut.getIdForModel(child) shouldBe 1
         }
         test("Other model type"){

@@ -15,21 +15,6 @@ val DataTypeMap = mapOf(
     "BaseConcept" to "gw2VY9q"
 )
 
-class PropertyBuilder(private val e: Element) {
-    fun role(input: String) =
-        apply { e.setAttribute("role", input)}
-    fun value(input: String) =
-        apply { e.setAttribute("value", input)}
-}
-
-class RefBuilder(private val e: Element) {
-    fun role(input: String) =
-        apply { e.setAttribute("role", input)}
-    fun resolve(input: String) =
-        apply { e.setAttribute("resolve", input)}
-    fun to(input:String) =
-        apply {e.setAttribute("to", input)}
-}
 fun String.toMPSIDNumber() = "${abs(this.hashCode())}"
 
 fun resolver(aspect: Aspect) = when(aspect){

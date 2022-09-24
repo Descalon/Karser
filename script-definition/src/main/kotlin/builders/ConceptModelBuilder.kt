@@ -20,16 +20,29 @@ class ConceptModelBuilder(conceptName: String, implementations: Array<out String
     fun setProperty(key: String, value: String) = set(key, value)
 
     fun add(name: String, type: String) =
-        apply { structureAspect.children.add(ChildReference(name, type, structureAspect)) }
+        apply { structureAspect.children.add(ChildReference(structureAspect,name,type)) }
 
     fun addChild(name: String, type: String) =
         add(name, type)
 
-    fun add(name: String, type: String, init: ChildReference.() -> Unit) =
-        apply { structureAspect.children.add(ChildReference(name, type, structureAspect).apply(init)) }
+    fun add(name: String, type: String, init: ChildReferenceBuilder.() -> Unit): ConceptModelBuilder {
+        val childRef = ChildReferenceBuilder(structureAspect).apply{name(name); type(type)}.build(init) as ChildReference
+        return apply {structureAspect.children.add(childRef)}
+    }
+    fun add(init: ChildReferenceBuilder.() -> Unit): ConceptModelBuilder {
+        val childRef = ChildReferenceBuilder(structureAspect).build(init) as ChildReference
+        return apply {structureAspect.children.add(childRef)}
+    }
 
-    fun reference(name: String, type: String, init: Reference.() -> Unit) =
-        apply { structureAspect.references.add(Reference(name, type, structureAspect).apply(init)) }
+    fun reference(name: String, type: String, builderInit: ReferenceBuilder.() -> Unit): ConceptModelBuilder {
+        val reference = ReferenceBuilder(structureAspect).apply{name(name); type(type)}.build(builderInit)
+        return apply { structureAspect.references.add(reference) }
+    }
+    fun reference(builderInit: ReferenceBuilder.() -> Unit): ConceptModelBuilder {
+        val reference = ReferenceBuilder(structureAspect).build(builderInit)
+        return apply { structureAspect.references.add(reference) }
+    }
+
 
     fun root() = apply { structureAspect.isRoot = true }
     fun extends(parent: String) = apply { structureAspect.extendsConcept = parent }

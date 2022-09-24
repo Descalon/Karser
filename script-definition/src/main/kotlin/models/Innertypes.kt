@@ -4,7 +4,7 @@ import utils.DataTypeMap
 import utils.Indices
 import utils.toMPSIDNumber
 
-data class ConceptProperty(val key: String, val value: String, val parent: Structure): IModel, INode{
+data class ConceptProperty internal constructor(val key: String, val value: String, val parent: Structure): IModel, INode{
     override val id: Int
         get() = parent.getIdForModel(this)
 
@@ -36,12 +36,12 @@ interface IEditorComponent : IModel, INode {
     override val role: String
         get() = ""
 }
-data class EditorConstant(val value: String, override val parent: Editor) : IEditorComponent
-data class PropertyReferenceEditor(val reference: ConceptProperty, override val parent: Editor) : IEditorComponent
-data class ListDeclarationEditor(val reference: String, override val parent: Editor) : IEditorComponent
-data class ChildPropertyReferenceEditor(val reference: String, val childProperty: String, override val parent: Editor) : IEditorComponent
-data class ChildIncludeEditor(val reference: String, override val parent: Editor): IEditorComponent
-class NewLine(override val parent: Editor) : IEditorComponent
+data class EditorConstant internal constructor(val value: String, override val parent: Editor) : IEditorComponent
+data class PropertyReferenceEditor internal constructor(val reference: ConceptProperty, override val parent: Editor) : IEditorComponent
+data class ListDeclarationEditor internal constructor(val reference: String, override val parent: Editor) : IEditorComponent
+data class ChildPropertyReferenceEditor internal constructor(val reference: String, val childProperty: String, override val parent: Editor) : IEditorComponent
+data class ChildIncludeEditor internal constructor(val reference: String, override val parent: Editor): IEditorComponent
+class NewLine internal constructor(override val parent: Editor) : IEditorComponent
 
 enum class CollectionLayout {
     NONE,

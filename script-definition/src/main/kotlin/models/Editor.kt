@@ -2,7 +2,7 @@ package models
 
 import utils.Indices
 
-class Editor(parent: Concept) : Aspect(parent), IModel, IDProvider<IEditorComponent> {
+class Editor internal constructor(parent: Concept) : Aspect(parent), IModel, IDProvider<IEditorComponent> {
     internal val components: MutableList<IEditorComponent> = mutableListOf()
     var collectionLayout = CollectionLayout.NONE
         internal set

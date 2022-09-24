@@ -2,15 +2,14 @@ package models
 
 import utils.Indices
 
-open class Reference(var name: String, private var type: String, val parent: Structure): IModel, INode{
-    private var isOptional = false
-        private set
-    private var isSingleton = false
-        private set
-
-    fun optional() = apply {isOptional = true}
-    fun singleton() = apply {isSingleton = true}
-
+open class Reference
+internal constructor(
+    val parent: Structure,
+    val name: String,
+    private val type: String,
+    val isOptional: Boolean = false,
+    val isSingleton: Boolean = false
+) : IModel, INode {
     override val id: Int
         get() = parent.getIdForModel(this)
     override val conceptInstance: String
@@ -21,4 +20,11 @@ open class Reference(var name: String, private var type: String, val parent: Str
     operator fun component1() = name
     operator fun component2() = type
 }
-class ChildReference(name: String, type: String, parent: Structure) : Reference(name, type, parent)
+
+class ChildReference(
+    parent: Structure,
+    name: String,
+    type: String,
+    isOptional: Boolean = false,
+    isSingleton: Boolean = false
+) : Reference(parent, name, type, isOptional, isSingleton)
