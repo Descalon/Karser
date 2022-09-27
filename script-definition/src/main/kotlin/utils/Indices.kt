@@ -45,9 +45,9 @@ class Indices {
     }
 
     class Core {
-        class INamedConceptIndex {
+        class INamedConcept {
             companion object Values {
-                const val ConceptIndex = "TrG5h"
+                const val Name = "TrG5h"
             }
         }
     }

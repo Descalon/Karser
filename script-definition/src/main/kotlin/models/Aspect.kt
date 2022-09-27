@@ -1,8 +1,8 @@
 package models
 
 abstract class Aspect internal constructor(val parent: Concept) : IModel, INode {
-    override val id: Int
-        get() = parent.getIdForModel(this)
+    override val id: String
+        get() = "${this::class.simpleName}${parent.getIdForModel(this)}"
     override val role: String
         get() = ""
 }

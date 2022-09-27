@@ -5,8 +5,8 @@ import utils.Indices
 import utils.toMPSIDNumber
 
 data class ConceptProperty internal constructor(val key: String, val value: String, val parent: Structure): IModel, INode{
-    override val id: Int
-        get() = parent.getIdForModel(this)
+    override val id: String
+        get() = "P${parent.getIdForModel(this)}"
 
     override val conceptInstance: String =
         Indices.Structure.PropertyDeclaration.ConceptIndex
@@ -16,7 +16,7 @@ data class ConceptProperty internal constructor(val key: String, val value: Stri
     override val defaultProperties: Map<String, String>
         get() = mapOf(
             Indices.Structure.PropertyDeclaration.Id to (key + value).toMPSIDNumber(),
-            Indices.Core.INamedConceptIndex.ConceptIndex to key
+            Indices.Core.INamedConcept.Name to key
         )
     override val defaultReferences: List<Ref>
         get() = listOf(
@@ -30,7 +30,7 @@ interface IEditorComponent : IModel, INode {
     val parent: Editor
 
     override val id
-        get() = parent.getIdForModel(this)
+        get() = "Ecp${parent.getIdForModel(this)}"
     override val conceptInstance: String
         get() = ""
     override val role: String

@@ -26,7 +26,7 @@ class Structure(parent: Concept) : Aspect(parent), IModel, IDProvider<IModel> {
 
     override val defaultProperties = mapOf(
         Indices.Structure.AbstractConceptDeclaration.ConceptId to (parent.name.toMPSIDNumber()),
-        Indices.Core.INamedConceptIndex.ConceptIndex to parent.name,
+        Indices.Core.INamedConcept.Name to parent.name,
         Indices.Structure.ConceptDeclaration.Rootable to "$isRoot"
     )
 

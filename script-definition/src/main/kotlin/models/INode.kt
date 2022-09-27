@@ -6,7 +6,7 @@ interface IDProvider<T: IModel> {
 data class Ref(val role: String, val to: String, val resolve: String)
 
 interface INode {
-    val id: Int
+    val id: String
     val conceptInstance: String
     val role: String
     val defaultProperties

@@ -37,7 +37,7 @@ class ElementBuilder (private val doc: Document, tagName: String = "node") {
         addChildNode("property", init)
 
     fun ref(init: ElementBuilder.() -> Unit) =
-        addChildNode("property", init)
+        addChildNode("ref", init)
 
     fun child(init: ElementBuilder.() -> Unit) =
         addChildNode("node", init)
@@ -47,5 +47,5 @@ class ElementBuilder (private val doc: Document, tagName: String = "node") {
     fun build() = element
 
 }
-fun element(doc: Document, init: ElementBuilder.() -> Unit) =
-    ElementBuilder(doc).apply(init).build()
+fun elementBuilder(doc: Document, init: ElementBuilder.() -> Unit) =
+    ElementBuilder(doc).apply(init)

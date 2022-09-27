@@ -10,8 +10,8 @@ internal constructor(
     val isOptional: Boolean = false,
     val isSingleton: Boolean = false
 ) : IModel, INode {
-    override val id: Int
-        get() = parent.getIdForModel(this)
+    override val id: String
+        get() = "R${parent.getIdForModel(this)}"
     override val conceptInstance: String
         get() = Indices.Structure.LinkDeclaration.ConceptIndex
     override val role: String
@@ -27,4 +27,7 @@ class ChildReference(
     type: String,
     isOptional: Boolean = false,
     isSingleton: Boolean = false
-) : Reference(parent, name, type, isOptional, isSingleton)
+) : Reference(parent, name, type, isOptional, isSingleton){
+    override val id: String
+        get() = "C${parent.getIdForModel(this)}"
+}
