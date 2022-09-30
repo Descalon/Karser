@@ -1,4 +1,5 @@
 import builders.conceptBuilder
+import models.CollectionLayout
 import writers.ConceptWriter
 
 fun main(args: Array<String>) {
@@ -7,6 +8,7 @@ fun main(args: Array<String>) {
         set("aName", "string")
         set("aNumber", "integer")
         editor {
+            layout(CollectionLayout.HORIZONTAL)
             property("aName")
         }
     }
