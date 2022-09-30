@@ -2,11 +2,16 @@ package builders
 
 import models.*
 
-class EditorModelBuilder(parentConcept: Concept) : IModelBuilder<Editor> {
-    override val subject: Editor = Editor(parentConcept)
 
-    private fun addComponent(c: IEditorComponent) =
+class EditorCellModelCollectionBuilder(private val parent: IEditorComponentCollection): IModelBuilder<EditorCellModelCollection>{
+    var layout: CollectionLayout = CollectionLayout.INDENT
+        private set
+    override val subject: EditorCellModelCollection
+        get() = EditorCellModelCollection(parent, layout).apply { parent.components.add(this) }
+
+    private fun addComponent(c: IEditorComponent){
         subject.components.add(c)
+    }
 
     fun constant(value: String) =
         apply { addComponent(EditorConstant(value, subject)) }
@@ -14,7 +19,11 @@ class EditorModelBuilder(parentConcept: Concept) : IModelBuilder<Editor> {
     fun property(reference: String) =
         apply {
             // TODO better exceptions
-            val ref = subject.parent.structure.properties.associateBy { it.key }[reference] ?: throw IllegalArgumentException("Reference not found")
+            val editor = when(parent){
+                is EditorCellModelCollection -> (parent as IEditorComponent).getEditor()
+                else -> parent as Editor
+            }
+            val ref = editor.parent.structure.properties.associateBy { it.key }[reference] ?: throw IllegalArgumentException("Reference not found")
             addComponent(PropertyReferenceEditor(ref, subject))
         }
 
@@ -31,5 +40,12 @@ class EditorModelBuilder(parentConcept: Concept) : IModelBuilder<Editor> {
         apply { addComponent(NewLine(subject)) }
 
     fun layout(l: CollectionLayout) =
-        apply { subject.collectionLayout = l}
+        apply { layout = l}
+
+    fun collection(init: EditorCellModelCollectionBuilder.() -> Unit): EditorCellModelCollectionBuilder {
+        return apply {
+            EditorCellModelCollectionBuilder(subject).build(init)
+        }
+    }
+
 }

@@ -14,8 +14,15 @@ class ConceptModelBuilder(conceptName: String, implementations: Array<out String
 
     private fun <T, Y> addAspect(builder: T, init: T.() -> Unit): Y
             where T : IModelBuilder<Y>, Y : IModel, Y : Aspect = builder.build(init).also { subject.aspects.add(it) }
+    private fun addAspect(aspect: Aspect) {
+        subject.aspects.add(aspect)
+    }
 
-    fun editor(init: EditorModelBuilder.() -> Unit): Editor = addAspect(EditorModelBuilder(subject), init)
+    fun editor(init: EditorCellModelCollectionBuilder.() -> Unit): Editor {
+        val editor = EditorCellModelCollectionBuilder(Editor(subject)).build(init).getEditor()
+        addAspect(editor)
+        return editor
+    }
     fun set(key: String, value: String) = apply { structureAspect.properties.add(ConceptProperty(key,value,structureAspect))}
     fun setProperty(key: String, value: String) = set(key, value)
 
@@ -42,7 +49,6 @@ class ConceptModelBuilder(conceptName: String, implementations: Array<out String
         val reference = ReferenceBuilder(structureAspect).build(builderInit)
         return apply { structureAspect.references.add(reference) }
     }
-
 
     fun root() = apply { structureAspect.isRoot = true }
     fun extends(parent: String) = apply { structureAspect.extendsConcept = parent }

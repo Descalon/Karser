@@ -5,7 +5,7 @@ import utils.Indices
 import utils.toMPSIDNumber
 
 class Structure(parent: Concept) : Aspect(parent), IModel, IDProvider<IModel> {
-    internal val properties: ConceptProperties = mutableListOf()
+    internal val properties: MutableList<ConceptProperty> = mutableListOf()
     internal val children: MutableList<ChildReference> = mutableListOf()
     internal val references: MutableList<Reference> = mutableListOf()
 

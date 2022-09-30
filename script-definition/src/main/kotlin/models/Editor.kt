@@ -2,13 +2,17 @@ package models
 
 import utils.Indices
 
-class Editor internal constructor(parent: Concept) : Aspect(parent), IModel, IDProvider<IEditorComponent> {
-    internal val components: MutableList<IEditorComponent> = mutableListOf()
-    var collectionLayout = CollectionLayout.NONE
-        internal set
+interface IEditorComponentCollection: IDProvider<IEditorComponent> {
+    val components: MutableList<IEditorComponent>
 
-    override val conceptInstance: String =
-        Indices.Editor.ConceptEditorDeclaration.ConceptIndex
     override fun getIdForModel(model: IEditorComponent) =
         components.indexOf(model)
+}
+
+class Editor internal constructor(parent: Concept) : Aspect(parent), IModel, IEditorComponentCollection {
+    override val conceptInstance: String =
+        Indices.Editor.ConceptEditorDeclaration.ConceptIndex
+    override val components: MutableList<IEditorComponent> = mutableListOf()
+    val collection
+        get() = components.first() as EditorCellModelCollection
 }

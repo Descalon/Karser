@@ -9,10 +9,10 @@ import models.*
 private val Concept.editor
     get() = this.aspects.first { it is Editor } as Editor
 
-class EditorModelBuilderTests : FunSpec({
-    fun editorOnly(init: EditorModelBuilder.() -> Unit): Editor {
+class EditorCellModelCollectionBuilderTests : FunSpec({
+    fun editorOnly(init: EditorCellModelCollectionBuilder.() -> Unit): EditorCellModelCollection {
         val c = ConceptModelBuilder("TestConcept", arrayOf()).build {}
-        return EditorModelBuilder(c).build(init)
+        return EditorCellModelCollectionBuilder(Editor(c)).build(init)
     }
 
     fun concept(lambda: ConceptModelBuilder.() -> Unit) =
@@ -36,7 +36,7 @@ class EditorModelBuilderTests : FunSpec({
             editor {
                 property(testKey)
             }
-        }.editor
+        }.editor.collection
 
         val actual = sut.components.find { it is PropertyReferenceEditor } as PropertyReferenceEditor
         actual shouldNotBe null
@@ -91,12 +91,22 @@ class EditorModelBuilderTests : FunSpec({
         CollectionLayout.NONE,
         CollectionLayout.HORIZONTAL,
         CollectionLayout.VERTICAL,
+        CollectionLayout.INDENT,
     ).forEach {
         test("Invoking layout should set collection layout to ${it.name}") {
             val sut = editorOnly {
                 layout(it)
             }
-            sut.collectionLayout shouldBe it
+            sut.layout shouldBe it
         }
+    }
+    test("Sub collection should have same parent as main collection"){
+        val sut = editorOnly {
+            collection {
+
+            }
+        }
+        val child = sut.components.first() as EditorCellModelCollection
+        sut.getEditor() shouldBe child.getEditor()
     }
 })
