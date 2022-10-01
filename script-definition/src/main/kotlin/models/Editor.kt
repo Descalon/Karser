@@ -15,4 +15,9 @@ class Editor internal constructor(parent: Concept) : Aspect(parent), IModel, IEd
     override val components: MutableList<IEditorComponent> = mutableListOf()
     val collection
         get() = components.first() as EditorCellModelCollection
+
+    override val defaultReferences: List<Ref>
+        get() = listOf(
+            Ref(Indices.Editor.AbstractComponent.ConceptDeclaration, "sidx:${parent.structure.id}", parent.name)
+        )
 }

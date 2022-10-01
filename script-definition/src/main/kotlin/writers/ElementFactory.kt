@@ -21,7 +21,7 @@ abstract class ElementFactory(private val document: Document) {
             }
         }
         principle.defaultReferences.forEach {
-            property {
+            ref {
                 attribute("to", it.to)
                 attribute("role", it.role)
                 if (it.resolve.isNotEmpty())

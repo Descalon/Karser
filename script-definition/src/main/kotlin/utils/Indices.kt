@@ -90,7 +90,7 @@ class Indices {
         class CellModelConstant {
             companion object Values {
                 const val ConceptIndex = "3F0ifn"
-                const val Text = "3F0ifn"
+                const val Text = "3F0ifm"
             }
         }
 

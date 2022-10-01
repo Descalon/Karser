@@ -4,10 +4,7 @@ import models.*
 
 
 class EditorCellModelCollectionBuilder(private val parent: IEditorComponentCollection): IModelBuilder<EditorCellModelCollection>{
-    var layout: CollectionLayout = CollectionLayout.INDENT
-        private set
-    override val subject: EditorCellModelCollection
-        get() = EditorCellModelCollection(parent, layout).apply { parent.components.add(this) }
+    override val subject: EditorCellModelCollection = EditorCellModelCollection(parent).apply { parent.components.add(this) }
 
     private fun addComponent(c: IEditorComponent){
         subject.components.add(c)
@@ -40,7 +37,7 @@ class EditorCellModelCollectionBuilder(private val parent: IEditorComponentColle
         apply { addComponent(NewLine(subject)) }
 
     fun layout(l: CollectionLayout) =
-        apply { layout = l}
+        apply { addComponent(EditorCellLayoutComponent(l,subject))}
 
     fun collection(init: EditorCellModelCollectionBuilder.() -> Unit): EditorCellModelCollectionBuilder {
         return apply {

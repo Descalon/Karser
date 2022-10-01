@@ -1,10 +1,13 @@
 package models
 
- abstract class Aspect internal constructor(val parent: Concept) : IModel, INode {
+import java.util.*
+
+abstract class Aspect internal constructor(val parent: Concept) : IModel, INode {
     override val id: String
-        get() = "${this::class.simpleName}${parent.getIdForModel(this)}"
+        get() = "${this::class.simpleName?.get(0) ?: "a"}${parent.getIdForModel(this)}"
     override val role: String
         get() = ""
+    val uuid = UUID.randomUUID()
 }
 
 class AspectCollection : MutableSet<Aspect> {

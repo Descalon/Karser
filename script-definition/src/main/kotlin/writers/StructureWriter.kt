@@ -22,10 +22,12 @@ class StructureWriter(private val principle: Structure, private val document: Do
     }
 
     companion object Builder {
-        fun fromPrinciple(principle: Structure): StructureWriter {
+        fun fromPrinciple(principle: Structure, modelRef: String = ""): StructureWriter {
             val template = this::class.java.classLoader.getResource("structure.template")?.file
-            val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(template)
-            return StructureWriter(principle,document)
+            val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(template).apply {
+                documentElement.setAttribute("ref", modelRef)
+            }
+            return StructureWriter(principle, document)
         }
     }
 }

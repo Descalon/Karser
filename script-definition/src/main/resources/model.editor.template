@@ -7,7 +7,7 @@
         <devkit ref="fbc25dd2-5da4-483a-8b19-70928e1b62d7(jetbrains.mps.devkit.general-purpose)" />
     </languages>
     <imports>
-        <import index="dvvt" ref="r:9b48b4ed-0c56-47dd-9287-6ea93d2a4530(Calculator.structure)" implicit="true" />
+        <import index="sidx" ref="r:7f26a197-ffb3-4ca5-a166-7391ea8c0ab3(Calculator.structure)" implicit="true" />
     </imports>
 </model>
 
