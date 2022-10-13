@@ -30,14 +30,14 @@ class EditorCellModelCollection(override val parent: Provider) :
         get() = Indices.Editor.BaseEditorComponent.CellModel
 }
 
-
 data class EditorCellLayoutComponent(val layout: CollectionLayout, override val parent: Provider) : IEditorComponent, INode {
     override val role: String
         get() = Indices.Editor.CellModelCollection.CellLayout
+
     override val conceptInstance: String = when (layout) {
-        CollectionLayout.NONE -> TODO()
-        CollectionLayout.VERTICAL -> TODO()
-        CollectionLayout.HORIZONTAL -> TODO()
+        CollectionLayout.NONE -> ""//TODO
+        CollectionLayout.VERTICAL -> ""//TODO
+        CollectionLayout.HORIZONTAL -> ""//TODO
         CollectionLayout.INDENT -> Indices.Editor.CellLayoutIndent.ConceptIndex
     }
 }

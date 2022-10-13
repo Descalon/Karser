@@ -15,7 +15,7 @@ class BuilderFunctionsTests: FunSpec ({
     test("ConceptModelBuilder function should return Concept with name and id"){
         val sut = conceptBuilder("TestConcept"){}
         sut.name shouldBe "TestConcept"
-        sut.structure.id shouldBe 0
+        sut.structure.id shouldBe "S0"
     }
 
     test("EditorModelBuilder function should return Editor "){

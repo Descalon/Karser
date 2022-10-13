@@ -1,5 +1,3 @@
-
 rootProject.name = "Karser"
-include("script-definition")
-include("foobar")
+include("lib")
 include("script-host")

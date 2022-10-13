@@ -13,7 +13,7 @@ class EditorCellModelCollectionBuilderTests : FunSpec({
     fun editorOnly(init: EditorCellModelCollectionBuilder.() -> Unit): EditorCellModelCollection {
         val c = ConceptModelBuilder("TestConcept", arrayOf()).build {}
         return EditorCellModelCollectionBuilder(Editor(c)).build(init)
-    }
+}
 
     fun concept(lambda: ConceptModelBuilder.() -> Unit) =
         ConceptModelBuilder("TestConcept", arrayOf()).build(lambda)
@@ -92,12 +92,14 @@ class EditorCellModelCollectionBuilderTests : FunSpec({
         CollectionLayout.HORIZONTAL,
         CollectionLayout.VERTICAL,
         CollectionLayout.INDENT,
-    ).forEach {
-        test("Invoking layout should set collection layout to ${it.name}") {
+    ).forEach { collectionLayout ->
+        test("Invoking layout should set collection layout to ${collectionLayout.name}") {
             val sut = editorOnly {
-                layout(it)
+                layout(collectionLayout)
             }
-            sut.layout shouldBe it
+            val actual = sut.components.find { it is EditorCellLayoutComponent } as EditorCellLayoutComponent
+            actual.layout shouldBe collectionLayout
+
         }
     }
     test("Sub collection should have same parent as main collection"){

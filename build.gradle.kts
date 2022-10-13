@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(project(":script-definition"))
+    implementation(project(":lib"))
     implementation(project(":script-host"))
 }
 

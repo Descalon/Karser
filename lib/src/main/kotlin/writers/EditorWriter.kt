@@ -42,10 +42,19 @@ class EditorWriter(private val principle: Editor, private val document: Document
     }
 
     companion object Builder {
-        fun fromPrinciple(principle: Editor, modelRef: String = ""): EditorWriter {
+        fun fromPrinciple(principle: Editor, modelRef: String = "", imports: Map<String, String> = mapOf()): EditorWriter {
             val template = this::class.java.classLoader.getResource("editor.template")?.file
             val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(template).apply {
                 documentElement.setAttribute("ref", modelRef)
+                val importsElement = createElement("imports")
+                documentElement.appendChild(importsElement)
+                imports.forEach { (idx, ref) ->
+                    createElement("import").apply {
+                        setAttribute("implicit", "true")
+                        setAttribute("index", idx)
+                        setAttribute("ref", ref)
+                    }.apply { importsElement.appendChild(this)}
+                }
             }
             return EditorWriter(principle, document)
         }
