@@ -88,7 +88,6 @@ class EditorCellModelCollectionBuilderTests : FunSpec({
         actual shouldNotBe null
     }
     listOf(
-        CollectionLayout.NONE,
         CollectionLayout.HORIZONTAL,
         CollectionLayout.VERTICAL,
         CollectionLayout.INDENT,
@@ -99,7 +98,6 @@ class EditorCellModelCollectionBuilderTests : FunSpec({
             }
             val actual = sut.components.find { it is EditorCellLayoutComponent } as EditorCellLayoutComponent
             actual.layout shouldBe collectionLayout
-
         }
     }
     test("Sub collection should have same parent as main collection"){

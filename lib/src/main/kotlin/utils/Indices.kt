@@ -65,6 +65,17 @@ class Indices {
             }
         }
 
+        class CellLayoutVertical {
+            companion object Values {
+                const val ConceptIndex = "2iRkQZ"
+            }
+        }
+        class CellLayoutHorizontal {
+            companion object Values {
+                const val ConceptIndex = "2iRfu4"
+            }
+        }
+
         class BaseEditorComponent {
             companion object Values {
                 const val ConceptIndex = "2wURMF"

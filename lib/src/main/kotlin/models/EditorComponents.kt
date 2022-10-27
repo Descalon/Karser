@@ -35,9 +35,8 @@ data class EditorCellLayoutComponent(val layout: CollectionLayout, override val 
         get() = Indices.Editor.CellModelCollection.CellLayout
 
     override val conceptInstance: String = when (layout) {
-        CollectionLayout.NONE -> ""//TODO
-        CollectionLayout.VERTICAL -> ""//TODO
-        CollectionLayout.HORIZONTAL -> ""//TODO
+        CollectionLayout.VERTICAL -> Indices.Editor.CellLayoutVertical.ConceptIndex
+        CollectionLayout.HORIZONTAL -> Indices.Editor.CellLayoutHorizontal.ConceptIndex
         CollectionLayout.INDENT -> Indices.Editor.CellLayoutIndent.ConceptIndex
     }
 }
@@ -86,7 +85,6 @@ data class ChildIncludeEditor internal constructor(val reference: String, overri
 class NewLine internal constructor(override val parent: Provider) : IEditorComponent
 
 enum class CollectionLayout {
-    NONE,
     VERTICAL,
     HORIZONTAL,
     INDENT
