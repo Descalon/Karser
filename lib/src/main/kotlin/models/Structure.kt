@@ -31,7 +31,9 @@ class Structure(parent: Concept) : Aspect(parent), IModel, IDProvider<IModel> {
     )
 
     override val defaultReferences = listOf(
-        Ref(Indices.Structure.ConceptDeclaration.Extends, "${Indices.Imports.JetbrainsStructure}:${DataTypeMap["BaseConcept"]}", "")
+        mapOf(
+            "role" to Indices.Structure.ConceptDeclaration.Extends,
+            "to" to "${Indices.Imports.JetbrainsStructure}:${DataTypeMap["BaseConcept"]}")
     )
 
     override val childNodes: List<INode> = properties + children + references

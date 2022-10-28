@@ -20,7 +20,10 @@ data class ConceptProperty internal constructor(val key: String, val value: Stri
         )
     override val defaultReferences: List<Ref>
         get() = listOf(
-            Ref(Indices.Structure.PropertyDeclaration.DataType, "${Indices.Imports.JetbrainsStructure}:${DataTypeMap[value]}", value)
+            mapOf(
+                "role" to Indices.Structure.PropertyDeclaration.DataType,
+                "to" to "${Indices.Imports.JetbrainsStructure}:${DataTypeMap[value]}",
+                "resolve" to value)
         )
 }
 

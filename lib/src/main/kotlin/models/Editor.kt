@@ -18,6 +18,9 @@ class Editor internal constructor(parent: Concept) : Aspect(parent), IModel, IEd
 
     override val defaultReferences: List<Ref>
         get() = listOf(
-            Ref(Indices.Editor.AbstractComponent.ConceptDeclaration, "sidx:${parent.structure.id}", parent.name)
+            mapOf(
+                "role" to Indices.Editor.AbstractComponent.ConceptDeclaration,
+                "to" to "sidx:${parent.structure.id}",
+                "resolve" to parent.name)
         )
 }

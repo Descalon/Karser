@@ -62,10 +62,10 @@ data class PropertyReferenceEditor internal constructor(val reference: ConceptPr
 
     override val defaultReferences: List<Ref>
         get() = listOf(
-            Ref(
-                Indices.Editor.CellModelWithRole.RelationDeclaration,
-                "sidx:${reference.id}",
-                reference.key
+            mapOf(
+                "role" to Indices.Editor.CellModelWithRole.RelationDeclaration,
+                "to" to "sidx:${reference.id}",
+                "resolve" to reference.key
             )
         )
 }

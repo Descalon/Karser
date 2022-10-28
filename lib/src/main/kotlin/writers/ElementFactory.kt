@@ -22,10 +22,9 @@ abstract class ElementFactory(private val document: Document) {
         }
         principle.defaultReferences.forEach {
             ref {
-                attribute("to", it.to)
-                attribute("role", it.role)
-                if (it.resolve.isNotEmpty())
-                    attribute("resolve", it.resolve)
+                for((k,v) in it){
+                    attribute(k,v)
+                }
             }
         }
         generateChildren().forEach {
