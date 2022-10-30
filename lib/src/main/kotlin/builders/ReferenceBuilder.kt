@@ -8,19 +8,19 @@ open class ReferenceBuilder(protected val parent: Structure): IModelBuilder<Refe
     protected var name = ""
     protected var type = ""
     protected var optional = false
-    protected var singleton = false
 
     override val subject: Reference
-        get() = Reference(parent, name, type, optional, singleton)
+        get() = Reference(parent, name, type, optional)
 
     fun name(input:String) = apply { name = input }
     fun type(input:String) = apply { type = input }
 
     fun isOptional() = apply { optional = true }
-    fun isSingleton() = apply { singleton = true }
 }
 
 class ChildReferenceBuilder(parent: Structure): ReferenceBuilder(parent) {
+    protected var singleton = false
     override val subject: ChildReference
         get() = ChildReference(parent, name, type, optional, singleton)
+    fun isSingleton() = apply { singleton = true }
 }

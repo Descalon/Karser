@@ -38,7 +38,7 @@ class Indices {
                 const val ConceptIndex = "1TJgyj"
                 const val Role = "20kJfa"
                 const val MetaClass = "20lmBu"
-                const val SourceCardinality = "20kJfa"
+                const val SourceCardinality = "20lbJX"
                 const val LinkId = "IQ2ns"
                 const val Target = "20lvS9"
             }

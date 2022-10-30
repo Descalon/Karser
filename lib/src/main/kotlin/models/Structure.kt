@@ -24,18 +24,23 @@ class Structure(parent: Concept) : Aspect(parent), IModel, IDProvider<IModel> {
         else -> throw IllegalArgumentException("Illegal type ${model::class}. Structure only supports ids for ChildReference, Reference, and ConceptProperty")
     }
 
-    override val defaultProperties = mapOf(
-        Indices.Structure.AbstractConceptDeclaration.ConceptId to (parent.name.toMPSIDNumber()),
-        Indices.Core.INamedConcept.Name to parent.name,
-        Indices.Structure.ConceptDeclaration.Rootable to "$isRoot"
-    )
+    override val defaultProperties
+        get() = mapOf(
+            Indices.Structure.AbstractConceptDeclaration.ConceptId to (parent.name.toMPSIDNumber()),
+            Indices.Core.INamedConcept.Name to parent.name,
+            Indices.Structure.ConceptDeclaration.Rootable to "$isRoot"
+        )
 
-    override val defaultReferences = listOf(
-        mapOf(
-            "role" to Indices.Structure.ConceptDeclaration.Extends,
-            "to" to "${Indices.Imports.JetbrainsStructure}:${DataTypeMap["BaseConcept"]}")
-    )
+    override val defaultReferences
+        get() = listOf(
+            mapOf(
+                "role" to Indices.Structure.ConceptDeclaration.Extends,
+                "to" to "${Indices.Imports.JetbrainsStructure}:${DataTypeMap["BaseConcept"]}")
+        )
 
     override val childNodes: List<INode> = properties + children + references
+    override fun resolveWith(context: IModel) {
+        (children + references).forEach{ it.resolveWith(context) }
+    }
 
 }

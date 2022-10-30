@@ -16,7 +16,7 @@ fun editorBuilder(parentConcept: Concept, init: EditorCellModelCollectionBuilder
 
 // Naming this function language, not languageBuilder, as this is the entrypoint for the DSL
 fun language(name: String, init: LanguageModelBuilder.() -> Unit): Language =
-    LanguageModelBuilder(name).build(init)
+    LanguageModelBuilder(name).build(init).apply { resolve() }
 
 fun <T : IModelBuilder<Y>, Y : IModel> T.build(block: T.() -> Unit): Y =
     apply(block).run { subject }

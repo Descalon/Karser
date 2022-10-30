@@ -16,6 +16,9 @@ class Concept internal constructor(
         else -> aspects.indexOf(model)
     }
 
+    override fun resolveWith(context: IModel) {
+        structure.resolveWith(context)
+    }
 
 }
 

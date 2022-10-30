@@ -5,10 +5,9 @@ import org.w3c.dom.Document
 import org.w3c.dom.Element
 import javax.xml.parsers.DocumentBuilderFactory
 
-abstract class ElementFactory(private val document: Document) {
+abstract class ElementFactory(protected val document: Document) {
     open fun generateChildren() = listOf<Element>()
-
-    open fun createFromNode(principle: INode): Element = ElementBuilder.build(document) {
+    fun createFromNode(principle: INode): Element = buildForNode(principle).apply {
         attribute("concept", principle.conceptInstance)
         attribute("id", principle.id)
         if (principle.role.isNotEmpty())
@@ -22,44 +21,46 @@ abstract class ElementFactory(private val document: Document) {
         }
         principle.defaultReferences.forEach {
             ref {
-                for((k,v) in it){
-                    attribute(k,v)
+                for ((k, v) in it) {
+                    attribute(k, v)
                 }
             }
         }
         generateChildren().forEach {
             child(it)
         }
-    }
+    }.build()
 
-    private class ElementBuilder(private val doc: Document, tagName: String = "node") {
-        private val element: Element = doc.createElement(tagName)
+    internal open fun buildForNode(principle: INode) : ElementBuilder = ElementBuilder.build(document){}
 
-        fun attribute(key: String, value: String) =
-            apply { element.setAttribute(key, value) }
+}
+internal class ElementBuilder(private val doc: Document, tagName: String = "node") {
+    private val element: Element = doc.createElement(tagName)
 
-        private fun addChildNode(tagName: String, init: ElementBuilder.() -> Unit) =
-            apply {
-                ElementBuilder(doc, tagName).apply(init).build().run { element.appendChild(this) }
-            }
+    fun attribute(key: String, value: String) =
+        apply { element.setAttribute(key, value) }
 
-        fun property(init: ElementBuilder.() -> Unit) =
-            addChildNode("property", init)
-
-        fun ref(init: ElementBuilder.() -> Unit) =
-            addChildNode("ref", init)
-
-        fun child(init: ElementBuilder.() -> Unit) =
-            addChildNode("node", init)
-
-        fun child(c: Element) = apply { element.appendChild(c) }
-
-        fun build() = element
-
-        companion object BuildFunction {
-            fun build(doc: Document, init: ElementBuilder.() -> Unit) =
-                ElementBuilder(doc).apply(init).build()
+    private fun addChildNode(tagName: String, init: ElementBuilder.() -> Unit) =
+        apply {
+            ElementBuilder(doc, tagName).apply(init).build().run { element.appendChild(this) }
         }
 
+    fun property(init: ElementBuilder.() -> Unit) =
+        addChildNode("property", init)
+
+    fun ref(init: ElementBuilder.() -> Unit) =
+        addChildNode("ref", init)
+
+    fun child(init: ElementBuilder.() -> Unit) =
+        addChildNode("node", init)
+
+    fun child(c: Element) = apply { element.appendChild(c) }
+
+    fun build() = element
+
+    companion object BuildFunction {
+        fun build(doc: Document, init: ElementBuilder.() -> Unit) =
+            ElementBuilder(doc).apply(init)
     }
+
 }

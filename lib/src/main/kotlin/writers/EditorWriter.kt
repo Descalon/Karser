@@ -8,7 +8,7 @@ import org.w3c.dom.Document
 import org.w3c.dom.Element
 import javax.xml.parsers.DocumentBuilderFactory
 
-class CollectionWriter(private val principle: EditorCellModelCollection, private val document: Document): ElementFactory(document) {
+class CollectionWriter(private val principle: EditorCellModelCollection, document: Document): ElementFactory(document) {
     fun resolver(component: IEditorComponent) = when(component) {
         is EditorCellModelCollection -> CollectionWriter(component, document)
         else -> object : ElementFactory(document){}
@@ -18,7 +18,7 @@ class CollectionWriter(private val principle: EditorCellModelCollection, private
     }
 
 }
-class EditorWriter(private val principle: Editor, private val document: Document): IWriter, ElementFactory(document){
+class EditorWriter(private val principle: Editor, document: Document): IWriter, ElementFactory(document){
 
     override val documentName: String
         get() = "${principle.parent.name}_Editor.mpsr"
