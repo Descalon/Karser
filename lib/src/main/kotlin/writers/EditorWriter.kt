@@ -1,62 +1,52 @@
 package writers
 
-import models.Editor
-import models.EditorCellModelCollection
-import models.IEditorComponent
 import models.INode
+import models.aspects.CollectionLayout
+import models.aspects.Editor
+import models.aspects.IEditorComponent
+import models.aspects.editor.components.ComponentCollection
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import utils.Indices
 import javax.xml.parsers.DocumentBuilderFactory
 
-class CollectionWriter(private val principle: EditorCellModelCollection, document: Document): ElementFactory(document) {
-    fun resolver(component: IEditorComponent) = when(component) {
-        is EditorCellModelCollection -> CollectionWriter(component, document)
-        else -> object : ElementFactory(document){}
+class EditorWriter(private val principle: Editor, private val conceptName: String, document: Document): ElementFactory(document), IWriter {
+    override fun generateChildren(): List<Element> {
+        val factory = object : EditorComponentFactory(principle.component, document){}
+        return listOf(factory.createFromNode(principle.component))
     }
-    override fun generateChildren() = principle.components.map {
-        resolver(it).createFromNode(it)
+    override fun write(): DocumentWithName {
+        document.documentElement.appendChild(createFromNode(principle))
+        return DocumentWithName("${conceptName}_Editor.mpsr", document, "editor")
     }
-
-}
-class EditorWriter(private val principle: Editor, document: Document): IWriter, ElementFactory(document){
-
-    override val documentName: String
-        get() = "${principle.parent.name}_Editor.mpsr"
-
-    override fun generateChildren() =
-        listOf(CollectionWriter(principle.collection, document).createFromNode(principle.collection))
-
-    override fun writeToDocument() = document.apply {
-        val imports = document.getElementsByTagName("imports").item(0)
-        writeImports(imports as Element)
-        documentElement.appendChild(createFromNode(principle))
-        documentElement.normalize()
-    }
-
-    private fun writeImports(imports: Element) = imports.apply {
-        //val structureImport = document.createElement("import")
-        //structureImport.setAttribute("index", "sindx")
-        //structureImport.setAttribute("ref", getModelRef(principle.parent.structure))
-        //structureImport.setAttribute("implicit", "true")
-        //appendChild(structureImport)
-    }
-
     companion object Builder {
-        fun fromPrinciple(principle: Editor, modelRef: String = "", imports: Map<String, String> = mapOf()): EditorWriter {
+        fun fromPrinciple(principle: Editor, name: String): EditorWriter {
             val template = this::class.java.classLoader.getResource("editor.template")?.file
-            val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(template).apply {
-                documentElement.setAttribute("ref", modelRef)
-                val importsElement = createElement("imports")
-                documentElement.appendChild(importsElement)
-                imports.forEach { (idx, ref) ->
-                    createElement("import").apply {
-                        setAttribute("implicit", "true")
-                        setAttribute("index", idx)
-                        setAttribute("ref", ref)
-                    }.apply { importsElement.appendChild(this)}
+            val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(template)
+            return EditorWriter(principle, name, document)
+        }
+    }
+
+    open class EditorComponentFactory(private val principle: IEditorComponent, document: Document): ElementFactory(document) {
+        override fun generateChildren(): List<Element> = principle.components.map {
+            val factory = object : EditorComponentFactory(it, document){}
+            factory.createFromNode(it)
+        }
+
+        override fun buildForNode(principle: INode): ElementBuilder {
+            if(principle !is ComponentCollection) return super.buildForNode(principle)
+            return ElementBuilder.build(document){
+                child{
+                    val layoutIndex = when(principle.layout){
+                        CollectionLayout.INDENT -> Indices.Editor.CellLayoutIndent.ConceptIndex
+                        CollectionLayout.VERTICAL -> Indices.Editor.CellLayoutVertical.ConceptIndex
+                        CollectionLayout.HORIZONTAL -> Indices.Editor.CellLayoutHorizontal.ConceptIndex
+                    }
+                    attribute("concept", layoutIndex)
+                    attribute("role", Indices.Editor.CellModelCollection.CellLayout)
+                    attribute("id", "layout")
                 }
             }
-            return EditorWriter(principle, document)
         }
     }
 }

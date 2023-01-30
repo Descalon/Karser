@@ -3,15 +3,14 @@ package writers
 import models.INode
 import org.w3c.dom.Document
 import org.w3c.dom.Element
-import javax.xml.parsers.DocumentBuilderFactory
 
 abstract class ElementFactory(protected val document: Document) {
     open fun generateChildren() = listOf<Element>()
     fun createFromNode(principle: INode): Element = buildForNode(principle).apply {
         attribute("concept", principle.conceptInstance)
         attribute("id", principle.id)
-        if (principle.role.isNotEmpty())
-            attribute("role", principle.role)
+        if (principle.conceptRole.isNotEmpty())
+            attribute("role", principle.conceptRole)
 
         principle.defaultProperties.forEach { (k, v) ->
             property {

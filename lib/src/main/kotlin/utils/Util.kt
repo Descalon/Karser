@@ -1,10 +1,5 @@
 package utils
 
-import models.Aspect
-import models.Editor
-import models.Structure
-import writers.EditorWriter
-import writers.StructureWriter
 import kotlin.math.abs
 
 val DataTypeMap = mapOf(

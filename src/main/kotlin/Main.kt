@@ -1,39 +1,31 @@
-import builders.conceptBuilder
-import builders.language
-import models.CollectionLayout
-import writers.ConceptWriter
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import script.models.aspects.editor.components.CollectionLayout
 import writers.LanguageWriter
 
 fun main(args: Array<String>) {
-    val testLang = language("CalculatorLanguage"){
+    val lang = language("CalculatorLanguage"){
         concept("InputField"){
-            set("name", "string")
-        }
-        concept("InputFieldReference"){
-            extends("Expression")
-            reference("field", "InputField"){}
-        }
-        concept("OutputField"){
-            set("name", "string")
+            property("name", "string")
         }
         concept("Calculator"){
-            root()
-            set("name", "string")
-            add("inputField", "InputField")
-            add("outputField", "OutputField")
-            editor {
-                layout(CollectionLayout.INDENT)
-                constant("calculator")
-                property("name")
+            isRoot()
+            property("name", "string")
+            child("inputField", "InputField") {
+                optional()
+                singleton()
+            }
+            editor{
+                stringConstant("calculator")
+                property("name"){
+                    newline()
+                }
+                child("inputField"){
+                    newlineForChildren()
+                }
             }
         }
-    }
-    val writer = LanguageWriter(testLang)
-    writer.write()
-    println("Written file(s)")
+    }.run { validation.Validator().validate(this)}
 
-//    val result = evalFile(input)
- //   val value = (result.valueOrThrow().returnValue as ResultValue.Value).value as Language
-
-
+    LanguageWriter(lang).save("c:\\users\\nagla\\testdocs")
 }

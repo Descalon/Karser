@@ -1,6 +1,7 @@
 package utils
 
-import models.Language
+import KarserScript
+import script.models.Language
 import kotlin.script.experimental.api.EvaluationResult
 import kotlin.script.experimental.api.ResultValue
 import kotlin.script.experimental.api.ResultWithDiagnostics

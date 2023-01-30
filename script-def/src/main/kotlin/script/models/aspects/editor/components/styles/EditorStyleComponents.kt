@@ -1,0 +1,8 @@
+package script.models.aspects.editor.components.styles
+
+import script.models.aspects.IEditorComponent
+
+interface IEditorStyleComponent : IEditorComponent
+
+class IndentLayoutNewLineStyleClassItem : IEditorStyleComponent
+class IndentLayoutNewLineChildrenStyleClassItem: IEditorStyleComponent
