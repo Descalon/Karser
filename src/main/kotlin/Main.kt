@@ -13,7 +13,6 @@ fun main(args: Array<String>) {
             property("name", "string")
             child("inputField", "InputField") {
                 optional()
-                singleton()
             }
             editor{
                 stringConstant("calculator")

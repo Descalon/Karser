@@ -28,6 +28,9 @@ class EditorComponentCollectionBuilder(layout: CollectionLayout){
 
     class StyleBuilder(private val principle: EditorComponent) {
         fun newline() = apply { principle.components.add(IndentLayoutNewLineStyleClassItem())}
-        fun newlineForChildren() = apply { principle.components.add(IndentLayoutNewLineChildrenStyleClassItem())}
+        fun newlineForChildren() = apply {
+            //principle.components.add(Layou)
+            principle.components.add(IndentLayoutNewLineChildrenStyleClassItem())
+        }
     }
 }

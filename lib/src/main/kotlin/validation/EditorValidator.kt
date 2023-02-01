@@ -12,8 +12,8 @@ class EditorValidator(private val parent: Concept) {
     }
 
     private fun resolve(id:Int, component: script.models.aspects.IEditorComponent): IEditorComponent = when (component) {
-        is script.models.aspects.editor.components.StringConstant -> transform(id, component)
         is script.models.aspects.editor.components.PropertyReference -> transform(id, component)
+        is script.models.aspects.editor.components.StringConstant -> transform(id, component)
         is script.models.aspects.editor.components.ComponentCollection -> transform(id, component)
         is script.models.aspects.editor.components.Ref -> transform(id, component)
         is script.models.aspects.editor.components.ChildRefNode -> transform(id, component)
@@ -47,6 +47,5 @@ class EditorValidator(private val parent: Concept) {
     private fun transform(id: Int, component: script.models.aspects.editor.components.ChildRefNode): ChildRefNode {
         val link = parent.children.first { it.role == component.linkDeclaration }
         return component.components.mapIndexed(this::resolve).let { ChildRefNode("cr$id", link, it) }
-
     }
 }

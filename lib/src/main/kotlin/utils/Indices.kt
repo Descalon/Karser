@@ -112,10 +112,45 @@ class Indices {
             }
         }
 
+        class CellModelRefNodeList {
+            companion object Values {
+                const val ConceptIndex = "3F2HdR"
+            }
+        }
+        class CellModelRefNode {
+            companion object Values {
+                const val ConceptIndex = "3F1sOY"
+            }
+        }
+
         class AbstractComponent {
             companion object Values {
                 const val ConceptIndex = "1XWOmA"
                 const val ConceptDeclaration = "1XX52x"
+            }
+        }
+        class IStyleContainer {
+            companion object Values {
+                const val ConceptIndex = "3F0Thp"
+                const val StyleItem = "3F10Kt"
+            }
+        }
+
+        class BooleanStyleSheetItem {
+            companion object Values {
+                const val ConceptIndex = "VOi\$J"
+                const val Flag = "VOm3f"
+            }
+        }
+
+        class IndentLayoutNewLineStyleClassItem {
+            companion object Values {
+                const val ConceptIndex = "ljvvj"
+            }
+        }
+        class IndentLayoutNewLineChildrenStyleClassItem {
+            companion object Values {
+                const val ConceptIndex = "pj6Ft"
             }
         }
     }

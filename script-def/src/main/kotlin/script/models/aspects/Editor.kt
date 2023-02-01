@@ -2,8 +2,7 @@ package script.models.aspects
 
 import script.models.Aspect
 
-interface IEditorComponent{
-}
+interface IEditorComponent{}
 
 abstract class EditorComponent(val components: MutableList<IEditorComponent> = mutableListOf()) : IEditorComponent
 

@@ -5,6 +5,7 @@ import models.aspects.CollectionLayout
 import models.aspects.Editor
 import models.aspects.IEditorComponent
 import models.aspects.editor.components.ComponentCollection
+import models.aspects.editor.components.LayoutNode
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import utils.Indices
@@ -31,22 +32,6 @@ class EditorWriter(private val principle: Editor, private val conceptName: Strin
         override fun generateChildren(): List<Element> = principle.components.map {
             val factory = object : EditorComponentFactory(it, document){}
             factory.createFromNode(it)
-        }
-
-        override fun buildForNode(principle: INode): ElementBuilder {
-            if(principle !is ComponentCollection) return super.buildForNode(principle)
-            return ElementBuilder.build(document){
-                child{
-                    val layoutIndex = when(principle.layout){
-                        CollectionLayout.INDENT -> Indices.Editor.CellLayoutIndent.ConceptIndex
-                        CollectionLayout.VERTICAL -> Indices.Editor.CellLayoutVertical.ConceptIndex
-                        CollectionLayout.HORIZONTAL -> Indices.Editor.CellLayoutHorizontal.ConceptIndex
-                    }
-                    attribute("concept", layoutIndex)
-                    attribute("role", Indices.Editor.CellModelCollection.CellLayout)
-                    attribute("id", "layout")
-                }
-            }
         }
     }
 }
