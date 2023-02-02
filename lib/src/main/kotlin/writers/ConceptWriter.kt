@@ -16,7 +16,7 @@ class ConceptWriter(private val principle: Concept, document: Document): Element
 
     override fun generateChildren(): List<Element> {
         val builder = object : ElementFactory(document) {}
-        return with(principle) { properties + children + references}.map(builder::createFromNode)
+        return with(principle) { properties + children + references + interfaces}.map(builder::createFromNode)
     }
 
     private fun resolver(aspect: Aspect) = when(aspect) {

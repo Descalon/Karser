@@ -25,6 +25,9 @@ class Validator {
         node.references.mapIndexed { index, ref ->
             resolve(ref, ctx).run { transform("r$index", this, ref) }
         }.apply { concept.references.addAll(this) }
+        node.interfaces.mapIndexed { index, i ->
+            transform("ifc$index", i)
+        }.apply { concept.interfaces.addAll(this) }
     }
 
     private fun resolve(node: script.models.Concept.Reference, ctx: Language) =
@@ -41,6 +44,9 @@ class Validator {
         Concept(id, concept.name, concept.isRoot, concept.properties.mapIndexed { index, property ->
             transform("p$index", property)
         })
+
+    private fun transform(id: String, intfc: script.models.Concept.InterfaceConceptReference) =
+        Concept.InterfaceConceptReference(id, intfc.name, intfc.packageName)
 
 }
 

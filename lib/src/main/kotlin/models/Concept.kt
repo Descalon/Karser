@@ -1,5 +1,6 @@
 package models
 
+import jdk.jshell.execution.Util
 import utils.DataTypeMap
 import utils.Indices
 import utils.toMPSIDNumber
@@ -15,6 +16,8 @@ class Concept internal constructor(
     val aspects: MutableList<Aspect> = mutableListOf()
     val children: MutableList<ChildReference> = mutableListOf()
     val references: MutableList<Reference> = mutableListOf()
+    val interfaces: MutableList<InterfaceConceptReference> = mutableListOf()
+
     override val conceptInstance: String = Indices.Structure.ConceptDeclaration.ConceptIndex
     override val conceptRole: String = ""
     override val defaultProperties
@@ -89,5 +92,21 @@ class Concept internal constructor(
         }
         override val defaultProperties: Map<String, String>
             get() = super.defaultProperties + (LinkDeclaration.MetaClass to "fLJjDmT/aggregation")
+    }
+
+    class InterfaceConceptReference(override val id: String, private val name: String, packageName: String): INode {
+        override val conceptInstance: String
+            get() = Indices.Structure.InterfaceConceptReference.ConceptIndex
+        override val conceptRole: String
+            get() = Indices.Structure.ConceptDeclaration.Implements
+
+        override val defaultReferences: List<Map<String, String>>
+            get () = listOf(
+                mapOf(
+                    "role" to Indices.Structure.InterfaceConceptReference.Intfc,
+                    "to" to "tpck:${DataTypeMap[name]}",
+                    "resolve" to name
+                )
+            )
     }
 }

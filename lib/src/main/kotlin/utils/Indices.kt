@@ -31,6 +31,7 @@ class Indices {
                 const val ConceptIndex = "1TIwiD"
                 const val Rootable = "19KtqR"
                 const val Extends = "1TJDcQ"
+                const val Implements = "PzmwI"
             }
         }
         class LinkDeclaration {
@@ -43,6 +44,14 @@ class Indices {
                 const val Target = "20lvS9"
             }
         }
+
+        class InterfaceConceptReference {
+            companion object Values {
+                const val ConceptIndex = "PrWs8"
+                const val Intfc = "PrY4T"
+            }
+        }
+
     }
 
     class Core {
