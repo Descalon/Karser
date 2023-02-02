@@ -122,7 +122,12 @@ class Indices {
                 const val ConceptIndex = "3F1sOY"
             }
         }
-
+        class CellModelListWithRole {
+            companion object Values {
+                const val ConceptIndex = "2czfm3"
+                const val CellLayout = "2czzBx"
+            }
+        }
         class AbstractComponent {
             companion object Values {
                 const val ConceptIndex = "1XWOmA"
