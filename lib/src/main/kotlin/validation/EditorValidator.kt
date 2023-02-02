@@ -49,7 +49,7 @@ class EditorValidator(private val parent: Concept) {
         return ComponentCollection("cc$id", layout, mapComponents(component)).toList()
     }
     private fun transform(id: Int, component: script.models.aspects.editor.components.Ref): List<IEditorComponent> {
-        val link = parent.references.first { it.role == component.role }
+        val link = parent.references.first { it.role == component.linkDeclaration }
         return Ref("r$id", link, component.role, mapComponents(component)).toList()
     }
     private fun transform(id: Int, component: script.models.aspects.editor.components.ChildRefNode): List<IEditorComponent> {
