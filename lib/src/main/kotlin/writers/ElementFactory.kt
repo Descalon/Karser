@@ -39,7 +39,7 @@ internal class ElementBuilder(private val doc: Document, tagName: String = "node
     fun attribute(key: String, value: String) =
         apply { element.setAttribute(key, value) }
 
-    private fun addChildNode(tagName: String, init: ElementBuilder.() -> Unit) =
+    fun addChildNode(tagName: String, init: ElementBuilder.() -> Unit) =
         apply {
             ElementBuilder(doc, tagName).apply(init).build().run { element.appendChild(this) }
         }
@@ -58,8 +58,8 @@ internal class ElementBuilder(private val doc: Document, tagName: String = "node
     fun build() = element
 
     companion object BuildFunction {
-        fun build(doc: Document, init: ElementBuilder.() -> Unit) =
-            ElementBuilder(doc).apply(init)
+        fun build(doc: Document, tagName: String = "node", init: ElementBuilder.() -> Unit) =
+            ElementBuilder(doc, tagName).apply(init)
     }
 
 }

@@ -1,7 +1,7 @@
 package utils
 
 class Indices {
-    class Imports {
+    abstract class Imports {
         companion object Values {
             const val JetbrainsStructure = "tpck"
             const val CurrentStructure = "dvvt"

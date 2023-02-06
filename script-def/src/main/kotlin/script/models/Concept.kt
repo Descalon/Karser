@@ -7,6 +7,8 @@ class Concept(val name:String) {
     val children: MutableList<ChildReference> = mutableListOf()
     val references: MutableList<Reference> = mutableListOf()
 
+
+    var extends: ExtensionConceptReference = ExtensionConceptReference("BaseConcept", "core")
     val interfaces: MutableList<InterfaceConceptReference> = mutableListOf()
 
     var isRoot: Boolean = false
@@ -16,4 +18,6 @@ class Concept(val name:String) {
     class ChildReference(name: String, type: String, isOptional: Boolean = false, val isSingleton: Boolean = false): Reference(name, type, isOptional)
 
     class InterfaceConceptReference(val name: String, val packageName: String)
+
+    class ExtensionConceptReference(val name: String, val packageName: String)
 }

@@ -2,6 +2,7 @@ package validation
 
 import models.Concept
 import models.Language
+import utils.ModelImport
 
 class Validator {
     fun validate(raw: script.models.Language) = raw.concepts.mapIndexed { index, concept ->
@@ -19,6 +20,7 @@ class Validator {
     }
 
     private fun resolve(concept: Concept, node: script.models.Concept, ctx: Language) {
+
         node.children.mapIndexed { index, child ->
             resolve(child, ctx).run { transform("ch$index", this, child) }
         }.apply { concept.children.addAll(this) }
@@ -40,13 +42,16 @@ class Validator {
         Concept.ChildReference(id, prop.name, type, prop.isOptional, prop.isSingleton)
 
     private fun transform(id: String, prop: script.models.Concept.Property) = Concept.Property(id, prop.name, prop.type)
-    private fun transform(id: String, concept: script.models.Concept) =
-        Concept(id, concept.name, concept.isRoot, concept.properties.mapIndexed { index, property ->
+    private fun transform(id: String, concept: script.models.Concept): Concept {
+        val baseClassImport = ModelImport.Structure.resolve(concept.extends.packageName)
+        val baseConceptReference = Concept.BaseConceptReference(concept.extends.name, baseClassImport)
+        return Concept(id, concept.name, concept.isRoot, baseConceptReference, concept.properties.mapIndexed { index, property ->
             transform("p$index", property)
         })
+    }
 
     private fun transform(id: String, intfc: script.models.Concept.InterfaceConceptReference) =
-        Concept.InterfaceConceptReference(id, intfc.name, intfc.packageName)
+        Concept.InterfaceConceptReference(id, intfc.name, ModelImport.Structure.resolve(intfc.packageName))
 
 }
 

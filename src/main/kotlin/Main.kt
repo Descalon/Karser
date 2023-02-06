@@ -2,7 +2,7 @@ import writers.LanguageWriter
 
 fun main(args: Array<String>) {
     val inputfieldref = conceptBuilder("InputFieldReference"){
-        //extends("Expression")
+        extends("Expression", "baseLanguage")
         reference("inputField", "InputField")
         editor {
             ref("inputField", "name")
@@ -28,7 +28,6 @@ fun main(args: Array<String>) {
         concept("Calculator"){
             implements("INamedConcept")
             isRoot()
-            property("name", "string")
             child("inputField", "InputField") {
                 optional()
             }

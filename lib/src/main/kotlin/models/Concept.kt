@@ -1,9 +1,6 @@
 package models
 
-import jdk.jshell.execution.Util
-import utils.DataTypeMap
-import utils.Indices
-import utils.toMPSIDNumber
+import utils.*
 
 typealias LinkDeclaration = Indices.Structure.LinkDeclaration
 
@@ -11,6 +8,7 @@ class Concept internal constructor(
     override val id: String,
     val name: String,
     private val isRoot: Boolean,
+    private val baseClass: BaseConceptReference,
     val properties: List<Property>
 ): INode {
     val aspects: MutableList<Aspect> = mutableListOf()
@@ -18,23 +16,30 @@ class Concept internal constructor(
     val references: MutableList<Reference> = mutableListOf()
     val interfaces: MutableList<InterfaceConceptReference> = mutableListOf()
 
+    private var additionalImports: MutableList<ModelImport> = mutableListOf()
+
+    val imports: Set<ModelImport>
+        get() = additionalImports.apply { add(baseClass.import) }.toSet()
+
+
     override val conceptInstance: String = Indices.Structure.ConceptDeclaration.ConceptIndex
     override val conceptRole: String = ""
     override val defaultProperties
         get() = mapOf(
-            Indices.Structure.AbstractConceptDeclaration.ConceptId to (name.toMPSIDNumber()),
+            Indices.Structure.AbstractConceptDeclaration.ConceptId to (name.toMPSIdAttribute()),
             Indices.Core.INamedConcept.Name to name,
             Indices.Structure.ConceptDeclaration.Rootable to "$isRoot"
         )
-    override val defaultReferences
-        get() = listOf(
-            mapOf(
-                "role" to Indices.Structure.ConceptDeclaration.Extends,
-                "to" to "${Indices.Imports.JetbrainsStructure}:${DataTypeMap["BaseConcept"]}")
-        )
+    override val defaultReferences: List<Map<String,String>>
+        get() {
+            return listOf(
+                    mapOf(
+                        "role" to Indices.Structure.ConceptDeclaration.Extends,
+                        "to" to baseClass.resolveReferenceString(),
+                        "resolve" to baseClass.name))
+        }
 
-
-    class Property(override val id: String, val role: String, val type: String):INode{
+    class Property(override val id: String, val role: String, private val type: String):INode{
         override val conceptInstance: String =
             Indices.Structure.PropertyDeclaration.ConceptIndex
         override val conceptRole: String =
@@ -42,14 +47,14 @@ class Concept internal constructor(
 
         override val defaultProperties: Map<String, String>
             get() = mapOf(
-                Indices.Structure.PropertyDeclaration.Id to (role + type).toMPSIDNumber(),
+                Indices.Structure.PropertyDeclaration.Id to (role + type).toMPSIdAttribute(),
                 Indices.Core.INamedConcept.Name to role
             )
         override val defaultReferences: List<Map<String,String>>
             get() = listOf(
                 mapOf(
                     "role" to Indices.Structure.PropertyDeclaration.DataType,
-                    "to" to "${Indices.Imports.JetbrainsStructure}:${DataTypeMap[type]}",
+                    "to" to ModelImport.Structure.Core.typeReferenceString(type),
                     "resolve" to type)
             )
 
@@ -67,7 +72,7 @@ class Concept internal constructor(
 
                 return mapOf(
                     LinkDeclaration.Role to role,
-                    LinkDeclaration.LinkId to "$role${type.name}".toMPSIDNumber(),
+                    LinkDeclaration.LinkId to "$role${type.name}".toMPSIdAttribute(),
                 ) + cardinality
             }
         override val defaultReferences: List<Map<String,String>>
@@ -94,7 +99,12 @@ class Concept internal constructor(
             get() = super.defaultProperties + (LinkDeclaration.MetaClass to "fLJjDmT/aggregation")
     }
 
-    class InterfaceConceptReference(override val id: String, private val name: String, packageName: String): INode {
+    abstract class ConceptReference(val name:String, val import: ModelImport) {
+        fun resolveReferenceString() =
+            import.typeReferenceString(name)
+    }
+
+    class InterfaceConceptReference(override val id: String, name: String, import: ModelImport): ConceptReference(name, import), INode {
         override val conceptInstance: String
             get() = Indices.Structure.InterfaceConceptReference.ConceptIndex
         override val conceptRole: String
@@ -104,9 +114,10 @@ class Concept internal constructor(
             get () = listOf(
                 mapOf(
                     "role" to Indices.Structure.InterfaceConceptReference.Intfc,
-                    "to" to "tpck:${DataTypeMap[name]}",
+                    "to" to resolveReferenceString(),
                     "resolve" to name
                 )
             )
     }
+    class BaseConceptReference(name: String, import: ModelImport): ConceptReference(name, import){}
 }

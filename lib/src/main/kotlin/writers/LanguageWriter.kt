@@ -20,7 +20,7 @@ class LanguageWriter(private val principle:Language) {
         return typeMap[kt]!!
     }
 
-    fun createDocuments() = principle.concepts.map { concept ->
+    private fun createDocuments() = principle.concepts.map { concept ->
         val writer = ConceptWriter.fromPrinciple(concept)
         (writer.writeForAspects() + listOf(writer.write())).onEach {
             it.document.documentElement.setAttribute("ref", getAspectUUID(it.aspect))

@@ -25,11 +25,23 @@ class ConceptWriter(private val principle: Concept, document: Document): Element
     }
 
     override fun write(): DocumentWithName {
+        writeForImports()
         document.documentElement.appendChild(createFromNode(principle))
         return DocumentWithName("${principle.name}.mpsr", document, "structure")
     }
 
     fun writeForAspects() = principle.aspects.map { resolver(it).write() }
+    private fun writeForImports(){
+        ElementBuilder.build(document, "imports"){
+            principle.imports.forEach{ model ->
+                addChildNode("import"){
+                    attribute("index", model.index)
+                    attribute("implicit", "true")
+                    attribute("ref", "r:${model.guid}(${model.packageName})")
+                }
+            }
+        }.apply { document.documentElement.appendChild(build()) }
+    }
 
     companion object Builder {
         fun fromPrinciple(principle: Concept): ConceptWriter {
