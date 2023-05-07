@@ -2,7 +2,7 @@ package models
 
 interface INode {
 
-    val id: String
+    val nodeID: String
     val conceptInstance: String
     val conceptRole: String
         get() = ""

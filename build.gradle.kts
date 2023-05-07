@@ -25,5 +25,3 @@ dependencies {
 application {
     mainClass.set("MainKt")
 }
-
-

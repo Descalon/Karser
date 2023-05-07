@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MPSProject">
+    <projectModules>
+      <modulePath path="$PROJECT_DIR$/languages/Karser.runtime/Karser.runtime.msd" folder="" />
+      <modulePath path="$PROJECT_DIR$/languages/Karser/Karser.mpl" folder="" />
+      <modulePath path="$PROJECT_DIR$/languages/SampleLang/SampleLang.mpl" folder="samples" />
+      <modulePath path="$PROJECT_DIR$/solutions/KarserPlugin/KarserPlugin.msd" folder="" />
+    </projectModules>
+  </component>
+</project>

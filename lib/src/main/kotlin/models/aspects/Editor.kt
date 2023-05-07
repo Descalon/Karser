@@ -13,7 +13,7 @@ enum class CollectionLayout {
     VERTICAL,
     HORIZONTAL
 }
-class Editor internal constructor(override val id: String, val component: IEditorComponent, parent: Concept): Aspect(parent), INode {
+class Editor internal constructor(override val nodeID: String, val component: IEditorComponent, parent: Concept): Aspect(parent), INode {
     override val conceptInstance: String =
         Indices.Editor.ConceptEditorDeclaration.ConceptIndex
 
@@ -21,7 +21,7 @@ class Editor internal constructor(override val id: String, val component: IEdito
         get() = listOf(
             mapOf(
                 "role" to Indices.Editor.AbstractComponent.ConceptDeclaration,
-                "to" to "sidx:${parent.id}",
+                "to" to "sidx:${parent.nodeID}",
                 "resolve" to parent.name
             )
         )

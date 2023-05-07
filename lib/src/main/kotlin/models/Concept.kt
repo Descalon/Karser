@@ -3,14 +3,54 @@ package models
 import utils.*
 
 typealias LinkDeclaration = Indices.Structure.LinkDeclaration
+class ConceptProperty(override val nodeID: String, val parent: AbstractConceptClass, val role: String, private val type: String):INode{
+    override val conceptInstance: String =
+        Indices.Structure.PropertyDeclaration.ConceptIndex
+    override val conceptRole: String =
+        Indices.Structure.AbstractConceptDeclaration.PropertyDeclaration
 
-class Concept internal constructor(
-    override val id: String,
+    override val defaultProperties: Map<String, String>
+        get() = mapOf(
+            Indices.Structure.PropertyDeclaration.Id to (role + type).toMPSIdAttribute(),
+            Indices.Core.INamedConcept.Name to role
+        )
+    override val defaultReferences: List<Map<String,String>>
+        get() = listOf(
+            mapOf(
+                "role" to Indices.Structure.PropertyDeclaration.DataType,
+                "to" to "foo", //ModelImport.Structure.Core.typeReferenceString(type),
+                "resolve" to type)
+        )
+
+}
+
+abstract class AbstractConceptClass(
+    val conceptID: String,
     val name: String,
+    val properties: MutableList<ConceptProperty>,
+    val parent: Language, ) {
+    companion object BuiltIns {
+        val DefaultLangauage = Language("default")
+        val DefaultConcept = object: AbstractConceptClass(
+            conceptID = "default",
+            name = "",
+            properties = mutableListOf(),
+            parent = DefaultLangauage
+        ){}
+    }
+}
+
+class AbstractConcept(conceptID: String, name: String, parent: Language):
+    AbstractConceptClass(conceptID, name, mutableListOf(), parent)
+
+open class Concept internal constructor(
+    conceptID: String,
+    parent: Language,
+    name: String,
     private val isRoot: Boolean,
     private val baseClass: BaseConceptReference,
-    val properties: List<Property>
-): INode {
+    properties: MutableList<ConceptProperty>
+): AbstractConceptClass(conceptID, name, properties, parent), INode {
     val aspects: MutableList<Aspect> = mutableListOf()
     val children: MutableList<ChildReference> = mutableListOf()
     val references: MutableList<Reference> = mutableListOf()
@@ -19,7 +59,8 @@ class Concept internal constructor(
     private var additionalImports: MutableList<ModelImport> = mutableListOf()
 
     val imports: Set<ModelImport>
-        get() = additionalImports.apply { add(baseClass.import) }.toSet()
+        get() = additionalImports.toSet()//apply { add(ModelImport.Structure.Core) }.toSet()
+    override val nodeID: String = this.conceptID
 
 
     override val conceptInstance: String = Indices.Structure.ConceptDeclaration.ConceptIndex
@@ -30,6 +71,7 @@ class Concept internal constructor(
             Indices.Core.INamedConcept.Name to name,
             Indices.Structure.ConceptDeclaration.Rootable to "$isRoot"
         )
+
     override val defaultReferences: List<Map<String,String>>
         get() {
             return listOf(
@@ -39,27 +81,11 @@ class Concept internal constructor(
                         "resolve" to baseClass.name))
         }
 
-    class Property(override val id: String, val role: String, private val type: String):INode{
-        override val conceptInstance: String =
-            Indices.Structure.PropertyDeclaration.ConceptIndex
-        override val conceptRole: String =
-            Indices.Structure.AbstractConceptDeclaration.PropertyDeclaration
+    fun resolveProperty(name: String) = properties.find { it.role == name }
+        ?: interfaces.flatMap { it.reference.properties }.find { it.role == name }
+        ?: throw Exception("unresolved reference")
 
-        override val defaultProperties: Map<String, String>
-            get() = mapOf(
-                Indices.Structure.PropertyDeclaration.Id to (role + type).toMPSIdAttribute(),
-                Indices.Core.INamedConcept.Name to role
-            )
-        override val defaultReferences: List<Map<String,String>>
-            get() = listOf(
-                mapOf(
-                    "role" to Indices.Structure.PropertyDeclaration.DataType,
-                    "to" to ModelImport.Structure.Core.typeReferenceString(type),
-                    "resolve" to type)
-            )
-
-    }
-    open class Reference(override val id: String, val role: String, val type: Concept, val isOptional: Boolean = false): INode {
+    open class Reference(override val nodeID: String, val role: String, val type: Concept, val isOptional: Boolean = false): INode {
         protected open fun cardinalityString() = if(isOptional) null else "_1"
         override val conceptInstance: String
             get() = LinkDeclaration.ConceptIndex
@@ -77,7 +103,7 @@ class Concept internal constructor(
             }
         override val defaultReferences: List<Map<String,String>>
             get() {
-                val principleId = type.id
+                val principleId = type.nodeID
                 val principleName = type.name
                 return listOf(
                     mapOf(
@@ -99,25 +125,15 @@ class Concept internal constructor(
             get() = super.defaultProperties + (LinkDeclaration.MetaClass to "fLJjDmT/aggregation")
     }
 
-    abstract class ConceptReference(val name:String, val import: ModelImport) {
+    abstract class ConceptReference(val name:String, val reference: AbstractConceptClass){
         fun resolveReferenceString() =
-            import.typeReferenceString(name)
+            "${reference.parent.name}:${reference.conceptID}"//import.typeReferenceString(name)
     }
 
-    class InterfaceConceptReference(override val id: String, name: String, import: ModelImport): ConceptReference(name, import), INode {
-        override val conceptInstance: String
-            get() = Indices.Structure.InterfaceConceptReference.ConceptIndex
-        override val conceptRole: String
-            get() = Indices.Structure.ConceptDeclaration.Implements
-
-        override val defaultReferences: List<Map<String, String>>
-            get () = listOf(
-                mapOf(
-                    "role" to Indices.Structure.InterfaceConceptReference.Intfc,
-                    "to" to resolveReferenceString(),
-                    "resolve" to name
-                )
-            )
+    class BaseConceptReference(name: String, reference: AbstractConceptClass): ConceptReference(name, reference){
+        companion object Builtins {
+            val EmptyReference = BaseConceptReference("", DefaultConcept)
+        }
     }
-    class BaseConceptReference(name: String, import: ModelImport): ConceptReference(name, import){}
+
 }

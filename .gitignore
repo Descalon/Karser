@@ -209,3 +209,8 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle
 
+# MPS 
+
+**/source_gen/
+**/source_gen.caches/
+**/classes_gen/

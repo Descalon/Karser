@@ -15,9 +15,9 @@ open class ConceptBuilder(name: String) {
         = addAspect(Editor(EditorComponentCollectionBuilder(CollectionLayout.INDENT).apply(init).build()))
     fun editor(layout: CollectionLayout, init: EditorComponentCollectionBuilder.() -> Unit)
             = addAspect(Editor(EditorComponentCollectionBuilder(layout).apply(init).build()))
-    fun implements(interfaceName: String, packageName: String = "core")
-        = apply { principle.interfaces.add(Concept.InterfaceConceptReference(interfaceName, packageName))}
-    fun extends(className: String, packageName: String = "core")
+    fun implements(interfaceName: String, languageName: String = "")
+        = apply { principle.interfaces.add(Concept.InterfaceConceptReference(interfaceName, languageName))}
+    fun extends(className: String, packageName: String = "")
         = apply { principle.extends = Concept.ExtensionConceptReference(className, packageName)}
     fun property(targetName: String, targetType: String)
         = apply { principle.properties.add(Concept.Property(targetName,targetType))}

@@ -2,7 +2,7 @@ import writers.LanguageWriter
 
 fun main(args: Array<String>) {
     val inputfieldref = conceptBuilder("InputFieldReference"){
-        extends("Expression", "baseLanguage")
+        //extends("Expression", "baseLanguage")
         reference("inputField", "InputField")
         editor {
             ref("inputField", "name")
@@ -28,20 +28,20 @@ fun main(args: Array<String>) {
         concept("Calculator"){
             implements("INamedConcept")
             isRoot()
-            child("inputField", "InputField") {
-                optional()
-            }
-            editor{
-                stringConstant("calculator")
-                property("name"){
-                    newline()
-                }
-                child("inputField"){
-                    newlineForChildren()
-                }
-            }
+//            child("inputField", "InputField") {
+//                optional()
+//            }
+//            editor{
+//                stringConstant("calculator")
+//                property("name"){
+//                    newline()
+//                }
+//                child("inputField"){
+//                    newlineForChildren()
+//                }
+//            }
         }
     }.run { validation.Validator().validate(this)}
 
-    LanguageWriter(lang).save("c:\\users\\nagla\\testdocs")
+    LanguageWriter(lang).save("c:\\users\\nagla\\thesis\\testdocs")
 }
