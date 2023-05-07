@@ -9,7 +9,7 @@ import utils.Indices
 
 class EditorValidator(private val parent: Concept) {
     fun resolve(aspect: script.models.aspects.Editor) : Editor {
-        return Editor("e${parent.id}", resolve(0, aspect.component).first(), parent)
+        return Editor("e${parent.nodeID}", resolve(0, aspect.component).first(), parent)
     }
 
     private fun resolve(id:Int, component: script.models.aspects.IEditorComponent): List<IEditorComponent> = when (component) {
@@ -37,8 +37,8 @@ class EditorValidator(private val parent: Concept) {
     private fun transform(id: Int, component: script.models.aspects.editor.components.StringConstant) =
         StringConstant("sc$id", component.value, mapComponents(component)).toList()
     private fun transform(id: Int, component: script.models.aspects.editor.components.PropertyReference): List<IEditorComponent> {
-        val p = parent.properties.find {it.role == component.role} ?: throw Exception("Unresolved reference ${component.role}")
-        return PropertyReference("pr$id", p, mapComponents(component)).toList()
+        val p1 = parent.resolveProperty(component.role)
+        return PropertyReference("pr$id", p1, mapComponents(component)).toList()
     }
     private fun transform(id: Int, component: script.models.aspects.editor.components.ComponentCollection): List<IEditorComponent> {
         val layout = when(component.layout){

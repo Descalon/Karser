@@ -8,7 +8,7 @@ abstract class ElementFactory(protected val document: Document) {
     open fun generateChildren() = listOf<Element>()
     fun createFromNode(principle: INode): Element = buildForNode(principle).apply {
         attribute("concept", principle.conceptInstance)
-        attribute("id", principle.id)
+        attribute("id", principle.nodeID)
         if (principle.conceptRole.isNotEmpty())
             attribute("role", principle.conceptRole)
 
