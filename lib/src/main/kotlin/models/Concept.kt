@@ -3,7 +3,7 @@ package models
 import utils.*
 
 typealias LinkDeclaration = Indices.Structure.LinkDeclaration
-class ConceptProperty(override val nodeID: String, val parent: AbstractConceptClass, val role: String, private val type: String): IModel, INode{
+class ConceptProperty(override val nodeID: String, val parent: AbstractConceptClass, val role: String, private val type: String): INode{
     override val conceptInstance: String =
         Indices.Structure.PropertyDeclaration.ConceptIndex
     override val conceptRole: String =
@@ -21,11 +21,6 @@ class ConceptProperty(override val nodeID: String, val parent: AbstractConceptCl
                 "to" to "foo", //ModelImport.Structure.Core.typeReferenceString(type),
                 "resolve" to type)
         )
-    override val node: INode
-        get() = this
-    override val registry: IRegistry
-        get() = TODO("Not yet implemented")
-
 }
 
 abstract class AbstractConceptClass(

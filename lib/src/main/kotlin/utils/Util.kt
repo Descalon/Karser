@@ -23,12 +23,12 @@ class BuiltInDefinitions {
                     AbstractConcept("gw2v91", "BaseConcept", this),
                     InterfaceConcept("h0trEE$","INamedConcept", this).apply {
                      properties.add( ConceptProperty("p0", this, "name", "")) }))
-                modelMap["structure"] =  ModelReference("${name}.structure", listOf(
-                    AspectReference("string", "fKAOsGN"),
-                    AspectReference("integer", "fKAQMTA"),
-                    AspectReference("BaseConcept", "gw2VY9q"),
-                    AspectReference("INamedConcept", "h0TrEE\$"))
-                )
+//                modelMap["structure"] =  ModelReference("${name}.structure", listOf(
+//                    AspectReference("string", "fKAOsGN"),
+//                    AspectReference("integer", "fKAQMTA"),
+//                    AspectReference("BaseConcept", "gw2VY9q"),
+//                    AspectReference("INamedConcept", "h0TrEE\$"))
+//                )
             }
             val BaseLanguage = BuiltInLanguage(
                 "jetbrains.mps.baseLanguage",
@@ -53,28 +53,6 @@ class BuiltInDefinitions {
         }
     }
 
-    class LanguageReferences {
-        companion object Values {
-            val Core = LanguageReference(
-                BuiltInLanguage.Core, listOf(
-                    ModelReference("structure")
-                ),
-                listOf("core")
-            )
-            val BaseLanguage = LanguageReference(
-                BuiltInLanguage.BaseLanguage, listOf(
-                    ModelReference("structure")
-                ),
-                listOf("baseLanguage")
-            )
-        }
-
-        fun resolve(alias: String) = when (alias.lowercase()) {
-            in Core.aliases, Core.language.name -> Core
-            in BaseLanguage.aliases, BaseLanguage.language.name -> Core
-            else -> throw Exception("can't resolve $alias")
-        }
-    }
     class ConceptReferences {
         companion object Values {
             val BaseConcept = Concept.BaseConceptReference("BaseConcept", BuiltInLanguage.Core.findConcept { it.name == "BaseConcept" })

@@ -1,5 +1,7 @@
 package models
 
+import utils.ModelImport
+
 interface INode {
 
     val nodeID: String
@@ -14,12 +16,9 @@ interface INode {
         get() = listOf<INode>()
 }
 
-
-abstract class IRegistry {
-    abstract val references: MutableList<LanguageReference>
-}
-
-interface IModel {
-    val node: INode
-    val registry: IRegistry
+interface IModel : INode {
+    val name: String
+    val imports: List<ModelImport>
+    val registry: List<Language>
+    val reference: String
 }

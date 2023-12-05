@@ -27,6 +27,11 @@ class LanguageWriter(private val principle:Language) {
         }
     }.flatten()
 
+    private fun createOtherDocs() = principle.primitiveDataClasses.map { dc ->
+        val writer = ModelWriter(dc)
+        writer.write()
+    }
+
     fun save(rootFolder: String){
         val tf = TransformerFactory.newInstance()
         tf.setAttribute("indent-number", 2)
@@ -37,7 +42,7 @@ class LanguageWriter(private val principle:Language) {
         // transformer.setOutputProperty(OutputKeys.INDENT, "yes")
         // ==== End: Pretty print
 
-        createDocuments().forEach {
+        createOtherDocs().forEach {
             val file = File("$rootFolder/${principle.name}.${it.aspect}/${it.name}")
             file.parentFile.mkdirs()
             transformer.transform(DOMSource(it.document), StreamResult(file))

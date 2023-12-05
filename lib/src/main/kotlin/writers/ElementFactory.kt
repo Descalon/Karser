@@ -3,8 +3,16 @@ package writers
 import models.INode
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import javax.xml.parsers.DocumentBuilderFactory
 
-abstract class ElementFactory(protected val document: Document) {
+abstract class ElementFactory{
+    protected val document: Document
+    constructor(){
+        document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument()
+    }
+    constructor(document: Document){
+        this.document = document
+    }
     open fun generateChildren() = listOf<Element>()
     fun createFromNode(principle: INode): Element = buildForNode(principle).apply {
         attribute("concept", principle.conceptInstance)

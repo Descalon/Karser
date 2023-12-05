@@ -17,7 +17,6 @@ class Validator {
                 }
             }.apply { concept.aspects.addAll(this) }
         }
-        initializeModelMap()
     }
 
     private fun resolve(concept: Concept, node: script.models.Concept, ctx: Language) {
